@@ -11,7 +11,7 @@
 
   if(isset($_FILES['Media'])){
 
-    $TDG = new UserTDG();
+    $TDG = UserTDG::get_instance();
 
     if (!$TDG->update_pfp($_FILES['Media'], $_SESSION["userID"])) {
         header("Location: ../error.php?ErrorMSG=Coudld not update file");

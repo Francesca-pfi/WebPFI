@@ -7,59 +7,19 @@ class UserTDG extends DBAO{
     private $tableName;
     private static $_instance = null;
 
-    public function __construct(){
+    //singleton
+    private function __construct(){
         Parent::__construct();
         $this->tableName = "users";
     }
 
-    //create table
-    public function createTable(){
-
-        try{
-            $conn = $this->connect();
-            $tableName = $this->tableName;
-            $query = "CREATE TABLE IF NOT EXISTS $tableName (id INTEGER(10) AUTO INCREMENT PRIMARY KEY,
-            email VARCHAR(25) UNIQUE NOT NULL,
-            username VARCHAR(25) NOT NULL,
-            password VARCHAR(250) NOT NULL)";
-            $stmt = $conn->prepare($query);
-            $stmt->execute();
-            $resp = true;
+    public static function get_instance(){
+        if(is_null(self::$_instance)) {
+            self::$_instance = new UserTDG();
         }
-
-        //error catch and msg display
-        catch(PDOException $e)
-        {
-            $resp = false;
-        }
-        //fermeture de connection PDO
-        $conn = null;
-        return $resp;
+      
+        return self::$_instance;
     }
-
-
-    //drop table
-    public function drop_table(){
-
-        try{
-            $conn = $this->connect();
-            $tableName = $this->tableName;
-            $query = "DROP TABLE $tableName";
-            $stmt = $conn->prepare($query);
-            $stmt->execute();
-            $resp = true;
-        }
-
-        //error catch and msg display
-        catch(PDOException $e)
-        {
-            $resp = false;
-        }
-        //fermeture de connection PDO
-        $conn = null;
-        return $resp;
-    }
-
 
     public function get_by_id($id){
 
@@ -83,7 +43,6 @@ class UserTDG extends DBAO{
         return $result;
     }
 
-
     public function get_by_email($email){
 
         try{
@@ -105,7 +64,6 @@ class UserTDG extends DBAO{
         $conn = null;
         return $result;
     }
-
 
     public function get_by_username($username){
 
@@ -129,7 +87,6 @@ class UserTDG extends DBAO{
         return $result;
     }
 
-
     public function get_all_users(){
 
         try{
@@ -150,7 +107,6 @@ class UserTDG extends DBAO{
         $conn = null;
         return $result;
     }
-
 
     public function add_user($email, $username, $password, $pfp){
 
@@ -175,7 +131,6 @@ class UserTDG extends DBAO{
         $conn = null;
         return $resp;
     }
-
 
     /*
       update juste pour les infos non sensibles
