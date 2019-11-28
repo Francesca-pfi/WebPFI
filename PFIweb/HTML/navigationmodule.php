@@ -1,7 +1,7 @@
 <?php
 
     if(isset($_SESSION["userID"])){
-        $navLinks = '       
+        $navLinks = '
         <li class="nav-item">
             <a class="nav-link" href="DOMAINLOGIC/logout.dom.php">LOGOUT</a>
         </li>
