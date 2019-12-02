@@ -12,7 +12,7 @@
     </head>
     <body>
         <?php include "navigationmodule.php";?>
-        <div class="container align-center text-center">
+        <div class="container-fluid align-center text-center">
               <?php  load_modules($content); ?>
         </div>
         <footer>
