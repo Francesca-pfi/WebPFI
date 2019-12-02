@@ -16,9 +16,9 @@ class UserTDG extends DBAO{
     public static function get_instance(){
         if(is_null(self::$_instance)) {
             self::$_instance = new UserTDG();
-        }
+          }
       
-        return self::$_instance;
+          return self::$_instance;
     }
 
     public function get_by_id($id){
