@@ -5,9 +5,7 @@
     foreach($images as $image){
         $display = new Image();
         $display->load_image($image['id']);
-
-        
+       
         $display->display_preview();
-        
     }
 ?>

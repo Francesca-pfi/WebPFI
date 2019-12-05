@@ -5,6 +5,7 @@
         die;
     }
 ?>
+
 <h3 class="my-4">Upload image</h3>
 <div class="card" style="margin-bottom:30px;border:0.3vh solid rgba(57,184,188,1)">
     

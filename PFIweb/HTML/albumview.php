@@ -4,6 +4,7 @@
     $album = new Album();
     $album->load_album($_GET["albumID"]);
 ?>
+
 <div class="container-fluid mt-30 pl-5">
   <h1 class="mb-4" ><?php echo $_GET["title"] ?> </h1>
     <div class="row justify-content-md-center">

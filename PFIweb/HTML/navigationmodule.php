@@ -43,7 +43,7 @@
             </li>
         </ul>
 
-        <form class="form-inline my-2 my-lg-0" action="search.php">
+        <form class="form-inline my-2 my-lg-0" action="billboard.php" method="post">
             <input class="form-control mr-sm-2" type="text" placeholder="Search" name="search">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </form>

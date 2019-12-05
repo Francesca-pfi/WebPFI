@@ -43,7 +43,46 @@ class AlbumTDG extends DBAO{
     }
 
     public function get_by_userID($userID){
+        try{
+            $conn = $this->connect();
+            $tableName = $this->tableName;
+            $query = "SELECT id, title, descr, userID, date FROM $tableName where userID=:id";
+            $stmt = $conn->prepare($query);
+            $stmt->bindParam(':id', $userID);
+            $stmt->execute();
+            $stmt->setFetchMode(PDO::FETCH_ASSOC);
+            $result = $stmt->fetchAll();
+        }
 
+        catch(PDOException $e)
+        {
+            echo "Error: " . $e->getMessage();
+        }
+        //fermeture de connection PDO
+        $conn = null;
+        return $result;
+    }
+
+    public function search_title($title){
+        try{
+            $conn = $this->connect();
+            $tableName = $this->tableName;
+            $query = "SELECT id, title, descr, userID, date FROM $tableName WHERE title like :title";
+            $stmt = $conn->prepare($query);
+            $param = "%" . $title . "%";
+            $stmt->bindParam(':title', $param);
+            $stmt->execute();
+            $stmt->setFetchMode(PDO::FETCH_ASSOC);
+            $result = $stmt->fetchAll();
+        }
+
+        catch(PDOException $e)
+        {
+            echo "Error: " . $e->getMessage();
+        }
+        //fermeture de connection PDO
+        $conn = null;
+        return $result;
     }
 
     public function get_all_albums(){

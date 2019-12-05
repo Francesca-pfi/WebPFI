@@ -84,6 +84,7 @@ class ImageTDG extends DBAO{
 
     public function add_image($albumID, $url, $descr){
 
+
         try{
             $conn = $this->connect();
             $tableName = $this->tableName;

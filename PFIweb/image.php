@@ -16,8 +16,5 @@
     
     require_once __DIR__ . "/HTML/masterpage.php";
 
-    
-
     die();
-
 ?>

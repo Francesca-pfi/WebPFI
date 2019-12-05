@@ -84,6 +84,18 @@ class User{
         return true;
     }
 
+    public function display_user(){   
+        $style = "style='margin-bottom:30px;border:0.2vh solid rgba(57,184,188,1)'";
+        $styleA = "style='text-decoration:none;color:white;font-size:1.3em;margin-left:2vw;'";
+        $border = "style='border-top:0.2vh solid rgba(57,184,188,1);border-bottom:0.2vh solid rgba(57,184,188,1)'";
+
+        echo "<div class='card text-white bg-dark'" . $style . " >";   
+        echo    "<div class='card-body' " . $border . ">";    
+        echo        '<img alt="" src="' . $this->pfp . '" height="80" width ="80">';
+        echo        "<a href='./billboard.php?userID=" . $this->id . "' " . $styleA . ">" . $this->username . "</a>";
+        echo    "</div>";               
+        echo "</div>";       
+    }
 
     //Login Validation
     public function Login($email, $pw){

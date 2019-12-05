@@ -37,5 +37,5 @@ date date NOT NULL);
 CREATE TABLE IF NOT EXISTS likes
 (userID INTEGER(10) NOT NULL,
 elemID INTEGER(10) NOT NULL,
-typeElem varchar(20) NOT NULL,
-);
+typeElem varchar(20) NOT NULL);
+

@@ -68,7 +68,7 @@ class Album{
         echo    "</div>";
         echo    "<div class='card-footer text-left'>";
         echo        "<span style='margin-right:1vw;'>Author : " . $username . "</span>";
-        if($userID = $idUserDisplay){
+        if($this->userID = $idUserDisplay){
         echo        "<a href='./DOMAINLOGIC/deleteAlbum.dom.php?albumID=" . $this->id . "' class='btn btn-primary'>Delete</a>";
         }          
         echo    "</div>";        
