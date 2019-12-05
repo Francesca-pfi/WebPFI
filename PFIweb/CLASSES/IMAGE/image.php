@@ -113,5 +113,23 @@ class Image{
         echo $btnDelete;
         echo "</div></div>";
     }
+
+    public function display_comments() {
+        include_once __DIR__ . "/../COMMENT/comment.php";
+        $TDG = CommentTDG::get_instance();
+        $posts = $TDG->get_by_elemID($this->id, 'image');
+        $res = false;
+  
+        foreach($posts as $post) {
+            $res = true;
+            $comment = new Comment();
+            $comment->load_comment($post['id']);
+            $comment->display();
+        }
+  
+        if (!$res){
+        echo "<div><p>No comments yet.</p></div>";
+        }
+    }
 }
 ?>

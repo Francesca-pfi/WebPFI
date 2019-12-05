@@ -131,8 +131,6 @@ class UserTDG extends DBAO{
     }
 
     public function add_user($email, $username, $password, $pfp){
-        $username = validator::sanitize($username);       
-        $email = validator::sanitize($email);   
 
         try{
             $conn = $this->connect();
@@ -160,8 +158,6 @@ class UserTDG extends DBAO{
       update juste pour les infos non sensibles
     */
     public function update_info($email, $username, $id){
-        $username = validator::sanitize($username);   
-        $email = validator::sanitize($email);   
 
         try{
             $conn = $this->connect();

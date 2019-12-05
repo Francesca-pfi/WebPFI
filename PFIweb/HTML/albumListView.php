@@ -10,6 +10,11 @@
         $display = new Album();
         $display->load_album($album['id']);
 
-        $display->display_album();        
+        if(validate_session()){
+            $display->display_album($_SESSION['userID']);
+        }
+        else{
+            $display->display_album(0);
+        }
     }
 ?>

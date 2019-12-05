@@ -6,10 +6,15 @@
 ?>
 
 <div class="container-fluid mt-30 pl-5">
-  <h1 class="mb-4" ><?php echo $_GET["title"] ?> </h1>
+  <h1 class="mb-4" ><?php $album->get_title(); ?> </h1>
     <div class="row justify-content-md-center">
         <div class="col-sm-8 mb-4">
             <?php include "imagelistview.php";?>
+            <br>
+            <?php 
+                $album->display_comments();
+                include "addcommentalbumview.php";
+            ?>
         </div>
         <div class="col-sm-3 mb-4">
             <?php 
