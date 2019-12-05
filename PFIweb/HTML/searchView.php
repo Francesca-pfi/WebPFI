@@ -3,7 +3,7 @@
         <?php 
             include "albumSearch.php";
             include "userSearch.php";
-            include "imageSearch.php";
+            //include "imageSearch.php";
         ?>
     </div>
 </div>

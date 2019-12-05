@@ -16,7 +16,6 @@ CREATE TABLE IF NOT EXISTS albums
 title VARCHAR(25) NOT NULL,
 descr varchar(250) not null,
 userID integer(10) NOT NULL,
-nombreVues INTEGER(10) NOT NULL,
 date date NOT NULL);
 
 CREATE TABLE IF NOT EXISTS images
@@ -39,4 +38,3 @@ CREATE TABLE IF NOT EXISTS likes
 (userID INTEGER(10) NOT NULL,
 elemID INTEGER(10) NOT NULL,
 typeElem varchar(20) NOT NULL);
-
