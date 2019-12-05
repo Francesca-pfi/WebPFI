@@ -1,17 +1,17 @@
 <?php   
-    include_once __DIR__ . "/../CLASSES/USER/user.php";   
+    include_once __DIR__ . "/../CLASSES/IMAGE/image.php";   
 
-    $TDG = UserTDG::get_instance();   
-    $title = $_POST['search'];
-    $users = $TDG->search_name($title);
+    $TDG = ImageTDG::get_instance();   
+    $descr = $_POST['search'];
+    $images = $TDG->search_descr($descr);
 
     if(count($users) > 0){
-        echo "<h3 class='my-4'>Users</h3>";
+        echo "<h3 class='my-4'>Images</h3>";
     }
-    foreach($users as $user){
-        $display = new User();
-        $display->load_user($user['email']);
+    foreach($images as $image){
+        $display = new Image();
+        $display->load_image($image["id"]);
 
-        $display->display_user(0);
+        $display->display_preview();
     }
 ?>

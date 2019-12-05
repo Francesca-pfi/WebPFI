@@ -6,6 +6,9 @@
             <a class="nav-link" href="DOMAINLOGIC/logout.dom.php">LOGOUT</a>
         </li>
         <li class="nav-item">
+            <a class="nav-link" href="billboard.php?userID=' . $_SESSION["userID"] . '">MY ALBUMS</a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link" href="myProfile.php">
             <img alt="" src="' . $_SESSION["userPFP"] . '" height="20" width ="20">
             MY PROFILE</a>
