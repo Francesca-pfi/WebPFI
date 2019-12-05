@@ -39,11 +39,8 @@ else {
     header("Location: ../error.php?ErrorMSG=Missing inputs");
    die();
 }
-$album = new Album();
-$album->load_album($_POST['albumID']);
-$albumID = $album->get_id();
-$albumTitle= $album->get_title();
-header("Location: ../album.php?albumID=$albumID&title=$albumTitle");
+$albumID = $_POST['albumID'];
+header("Location: ../album.php?albumID=$albumID");
   die();
 
 ?>

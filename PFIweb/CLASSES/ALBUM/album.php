@@ -61,7 +61,7 @@ class Album{
 
         echo "<div class='card text-white bg-dark'" . $style . " >";
         echo    "<div class='card-header'>";
-        echo        "<a " . $styleA . "href=\"./album.php?albumID=" . $this->id . "&title=" . $this->title . "\">" . $this->title . "</a>";               
+        echo        "<a " . $styleA . "href=\"./album.php?albumID=" . $this->id . "\">" . $this->title . "</a>";               
         echo    "</div>";        
         echo    "<div class='card-body' " . $border . ">";     
         echo        "<div>". $this->descr ."</div>";        
@@ -73,8 +73,35 @@ class Album{
         }          
         echo    "</div>";        
         echo "</div>";
+    }
 
-        
+    public function display_images_preview() {
+        include_once __DIR__ . "/../CLASSES/IMAGE/image.php";
+        $TDG = ImageTDG::get_instance();
+        $images = $TDG->get_by_albumID($this->id);
+        foreach($images as $image){
+            $display = new Image();
+            $display->load_image($image['id']);
+            $display->display_preview();
+        }
+    }
+
+    public function display_comments() {
+        include_once __DIR__ . "/../COMMENT/comment.php";
+        $TDG = CommentTDG::get_instance();
+        $posts = $TDG->get_by_elemID($this->id, 'album');
+        $res = false;
+  
+        foreach($posts as $post) {
+            $res = true;
+            $comment = new Comment();
+            $comment->load_comment($post['id']);
+            $post->display();
+        }
+  
+        if (!$res){
+        echo "<div><p>No comments yet.</p></div>";
+        }
     }
 }
 ?>

@@ -2,7 +2,7 @@
     session_start();
     include "UTILS/sessionhandler.php";
 
-    $title = $_GET["title"];
+    $title = "Album";
 
     $content = array();
     
