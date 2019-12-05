@@ -83,7 +83,7 @@ class ImageTDG extends DBAO{
     }
 
     public function add_image($albumID, $url, $descr){
-        
+
 
         try{
             $conn = $this->connect();
@@ -105,7 +105,48 @@ class ImageTDG extends DBAO{
         $conn = null;
         return $resp;
     }
+    public function delete_image($imageID) {
+        try{
+            $conn = $this->connect();
+            $tableName = $this->tableName;
+            $query = "delete from $tableName where id=:id";
+            $stmt = $conn->prepare($query);
+            $stmt->bindParam(':id', $imageID);
+            $stmt->execute();
+            $resp =  true;
+        }
 
+        catch(PDOException $e)
+        {
+            $resp =  false;
+        }
+        //fermeture de connection PDO
+        $conn = null;
+        return $resp;
+    }
+    public function delete_images_by_albumID($albumID) {
+        try{
+            $images = $this->get_by_albumID($albumID);
+            $conn = $this->connect();
+            $tableName = $this->tableName;
+            $query = "delete from $tableName where albumID=:albumID";
+            $stmt = $conn->prepare($query);
+            $stmt->bindParam(':albumID', $albumID);
+            $stmt->execute();
+            foreach ($images as $image) {
+                unlink("../" . $image["url"]);
+            }
+            $resp =  true;
+        }
+
+        catch(PDOException $e)
+        {
+            $resp =  false;
+        }
+        //fermeture de connection PDO
+        $conn = null;
+        return $resp;
+    }
     public function get_number_of_likes($imageID) {
         try{
             $conn = $this->connect();
@@ -149,6 +190,66 @@ class ImageTDG extends DBAO{
         //fermeture de connection PDO
         $conn = null;
         return $result["count"] > 0;
+    }
+
+    public function add_view($imageID) {
+        try{
+            $conn = $this->connect();
+            $tableName = $this->tableName;
+            $query = "update $tableName set nombreVues = nombreVues + 1 where id=:id";
+            $stmt = $conn->prepare($query);
+            $stmt->bindParam(':id', $imageID);
+            $stmt->execute();
+            $resp =  true;
+        }
+
+        catch(PDOException $e)
+        {
+            $resp =  false;
+        }
+        //fermeture de connection PDO
+        $conn = null;
+        return $resp;
+    }
+
+    public function like_image($imageID, $userID) {
+        try{
+            $conn = $this->connect();
+            $query = "insert into likes values(:userID,:imageID,'image')";
+            $stmt = $conn->prepare($query);
+            $stmt->bindParam(':userID', $userID);
+            $stmt->bindParam(':imageID', $imageID);
+            $stmt->execute();
+            $resp =  true;
+        }
+
+        catch(PDOException $e)
+        {
+            echo "Error: " . $e->getMessage();
+            $resp =  false;
+        }
+        //fermeture de connection PDO
+        $conn = null;
+        return $resp;
+    }
+    public function unlike_image($imageID, $userID) {
+        try{
+            $conn = $this->connect();
+            $query = "delete from likes where userID=:userID and elemID=:imageID and typeElem='image'";
+            $stmt = $conn->prepare($query);
+            $stmt->bindParam(':userID', $userID);
+            $stmt->bindParam(':imageID', $imageID);
+            $stmt->execute();
+            $resp =  true;
+        }
+
+        catch(PDOException $e)
+        {
+            $resp =  false;
+        }
+        //fermeture de connection PDO
+        $conn = null;
+        return $resp;
     }
 } 
 ?>

@@ -24,7 +24,7 @@ else {
    die();
 }
 
-header("Location: ../billboard.php");
+header("Location: ../myProfile.php");
   die();
 
 ?>

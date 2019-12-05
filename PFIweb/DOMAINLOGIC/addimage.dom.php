@@ -1,5 +1,6 @@
 <?php
   include_once "../CLASSES/IMAGE/image.php";
+  include_once "../CLASSES/ALBUM/album.php";
   include __DIR__ . "/../UTILS/sessionhandler.php";
 
   session_start();
@@ -9,7 +10,7 @@ if(!validate_session()){
     die();
 }
 
-if(isset($_FILES["file"])){
+if(isset($_FILES["file"]) && isset($_POST["albumID"]) && isset($_POST["descr"])){
     $file = $_FILES["file"];
     $TDG = ImageTDG::get_instance();
 
@@ -35,11 +36,14 @@ if(isset($_FILES["file"])){
 
 }
 else {
-    header("Location: ../error.php?ErrorMSG=No file found");
+    header("Location: ../error.php?ErrorMSG=Missing inputs");
    die();
 }
-
-header("Location: ../billboard.php");
+$album = new Album();
+$album->load_album($_POST['albumID']);
+$albumID = $album->get_id();
+$albumTitle= $album->get_title();
+header("Location: ../album.php?albumID=$albumID&title=$albumTitle");
   die();
 
 ?>
