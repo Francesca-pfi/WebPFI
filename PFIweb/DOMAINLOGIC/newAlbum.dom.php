@@ -2,6 +2,7 @@
     session_start();
 
     include "../CLASSES/ALBUM/album.php";
+    include_once __DIR__ . "/../UTILS/formvalidator.php";
     
     $TDG = AlbumTDG::get_instance();
 
