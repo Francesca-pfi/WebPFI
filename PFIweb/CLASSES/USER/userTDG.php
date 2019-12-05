@@ -16,9 +16,9 @@ class UserTDG extends DBAO{
     public static function get_instance(){
         if(is_null(self::$_instance)) {
             self::$_instance = new UserTDG();
-        }
+          }
       
-        return self::$_instance;
+          return self::$_instance;
     }
 
     public function get_by_id($id){
@@ -73,6 +73,28 @@ class UserTDG extends DBAO{
             $query = "SELECT * FROM $tableName WHERE username=:username";
             $stmt = $conn->prepare($query);
             $stmt->bindParam(':username', $username);
+            $stmt->execute();
+            $stmt->setFetchMode(PDO::FETCH_ASSOC);
+            $result = $stmt->fetchAll();
+        }
+
+        catch(PDOException $e)
+        {
+            echo "Error: " . $e->getMessage();
+        }
+        //fermeture de connection PDO
+        $conn = null;
+        return $result;
+    }
+
+    public function search_name($name){
+        try{
+            $conn = $this->connect();
+            $tableName = $this->tableName;
+            $query = "SELECT id, email, username, profilePic FROM $tableName WHERE username like :name";
+            $stmt = $conn->prepare($query);
+            $param = "%" . $name . "%";
+            $stmt->bindParam(':name', $param);
             $stmt->execute();
             $stmt->setFetchMode(PDO::FETCH_ASSOC);
             $result = $stmt->fetchAll();

@@ -43,7 +43,46 @@ class AlbumTDG extends DBAO{
     }
 
     public function get_by_userID($userID){
+        try{
+            $conn = $this->connect();
+            $tableName = $this->tableName;
+            $query = "SELECT id, title, descr, userID, date FROM $tableName where userID=:id";
+            $stmt = $conn->prepare($query);
+            $stmt->bindParam(':id', $userID);
+            $stmt->execute();
+            $stmt->setFetchMode(PDO::FETCH_ASSOC);
+            $result = $stmt->fetchAll();
+        }
 
+        catch(PDOException $e)
+        {
+            echo "Error: " . $e->getMessage();
+        }
+        //fermeture de connection PDO
+        $conn = null;
+        return $result;
+    }
+
+    public function search_title($title){
+        try{
+            $conn = $this->connect();
+            $tableName = $this->tableName;
+            $query = "SELECT id, title, descr, userID, date FROM $tableName WHERE title like :title";
+            $stmt = $conn->prepare($query);
+            $param = "%" . $title . "%";
+            $stmt->bindParam(':title', $param);
+            $stmt->execute();
+            $stmt->setFetchMode(PDO::FETCH_ASSOC);
+            $result = $stmt->fetchAll();
+        }
+
+        catch(PDOException $e)
+        {
+            echo "Error: " . $e->getMessage();
+        }
+        //fermeture de connection PDO
+        $conn = null;
+        return $result;
     }
 
     public function get_all_albums(){
@@ -67,17 +106,16 @@ class AlbumTDG extends DBAO{
         return $result;
     }
 
-    public function add_user($email, $username, $password, $pfp){
-
+    public function add_album($title,$descr,$userID,$date){
         try{
             $conn = $this->connect();
             $tableName = $this->tableName;
-            $query = "INSERT INTO $tableName (email, username, password, profilePic) VALUES (:email, :username, :password, :profilePic)";
+            $query = "INSERT INTO $tableName (title, descr, userID, date) VALUES (:title, :descr, :userID, :date)";
             $stmt = $conn->prepare($query);
-            $stmt->bindParam(':email', $email);
-            $stmt->bindParam(':username', $username);
-            $stmt->bindParam(':password', $password);
-            $stmt->bindParam(':profilePic', $pfp);
+            $stmt->bindParam(':title', $title);
+            $stmt->bindParam(':descr', $descr);
+            $stmt->bindParam(':userID', $userID);
+            $stmt->bindParam(':date', $date);
             $stmt->execute();
             $resp =  true;
         }
@@ -90,4 +128,25 @@ class AlbumTDG extends DBAO{
         $conn = null;
         return $resp;
     }
+
+    public function delete_album($id){
+        try{
+            $conn = $this->connect();
+            $tableName = $this->tableName;
+            $query = "DELETE FROM $tableName where id = :id";
+            $stmt = $conn->prepare($query);
+            $stmt->bindParam(':id', $id);
+            $stmt->execute();
+            $resp =  true;
+        }
+
+        catch(PDOException $e)
+        {
+            $resp =  false;
+        }
+        //fermeture de connection PDO
+        $conn = null;
+        return $resp;
+    }
+}
 ?>

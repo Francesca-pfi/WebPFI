@@ -18,6 +18,10 @@
         $module = "displaythreadview.php";
         array_push($content, $module);
     }
+    if(isset($_POST["search"])){
+        $module = "searchView.php";
+        array_push($content, $module);
+    }
     else{
         $module = "billboardview.php";
         array_push($content, $module);
