@@ -66,7 +66,6 @@ class User{
     */
     public function load_user($email){
         $TDG = UserTDG::get_instance();
-
         $res = $TDG->get_by_email($email);
 
         if(!$res)
@@ -106,9 +105,7 @@ class User{
 
     //Register Validation
     public function validate_email_not_exists($email){
-
         $TDG = UserTDG::get_instance();
-      
         $res = $TDG->get_by_email($email);
         $TDG = null;
         if($res)
@@ -135,7 +132,6 @@ class User{
 
         //add user to DB
         $TDG = UserTDG::get_instance();
-
         $res = $TDG->add_user($email, $username, password_hash($pw, PASSWORD_DEFAULT), $pfp);
         $TDG = null;
         return true;
@@ -163,7 +159,6 @@ class User{
         $this->username = $newname;
 
         $TDG = UserTDG::get_instance();
-
         $res = $TDG->update_info($this->email, $this->username, $this->id);
 
         if($res){
@@ -199,7 +194,6 @@ class User{
 
         //create TDG and update to new hash
         $TDG = UserTDG::get_instance();
-
         $NHP = password_hash($pw, PASSWORD_DEFAULT);
         $res = $TDG->update_password($NHP, $this->id);
         $this->password = $NHP;
@@ -210,7 +204,6 @@ class User{
 
     public static function get_username_by_ID($id){
         $TDG = UserTDG::get_instance();
-
         $res = $TDG->get_by_id($id);
         $TDG = null;
         return $res["username"];

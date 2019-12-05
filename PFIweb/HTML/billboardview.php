@@ -7,15 +7,14 @@
   }
 ?>
 
-<!--<div class="container mt-30">
+<div class="container-fluid mt-30 pl-5">
   <h1 class="mb-4" >Welcome <?php echo $name ?> </h1>
-    <div class="row">
+    <div class="row justify-content-md-center">
         <div class="col-sm-8 mb-4">
-            <?//php include "threadlistview.php"; ?>
+            <?php include "albumListView.php";?>
         </div>
-        <div class="col-sm-4 mb-4">
-            <?//php include "threadcreationview.php"; ?>
-            <?//php include "mostvisitedview.php"; ?>
+        <div class="col-sm-3 mb-4">
+            <?php include "albumCreationView.php"; ?>
         </div>
     </div>
-</div>-->
+</div>
