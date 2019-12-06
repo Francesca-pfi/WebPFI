@@ -2,6 +2,7 @@
   include "../CLASSES/USER/user.php";
   include "../UTILS/formvalidator.php";
   include __DIR__ . "/../UTILS/sessionhandler.php";
+  include_once __DIR__ . "/../UTILS/formvalidator.php";
 
   session_start();
 

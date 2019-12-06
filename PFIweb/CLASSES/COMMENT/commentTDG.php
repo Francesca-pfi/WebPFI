@@ -1,9 +1,6 @@
 <?php
-
 include_once __DIR__ . "/../../UTILS/connector.php";
-
 class CommentTDG extends DBAO{
-
     private $tableName;
     private static $_instance = null;
     
@@ -19,7 +16,6 @@ class CommentTDG extends DBAO{
       
           return self::$_instance;
     }
-
     public function get_by_ID($id){
         
         try{
@@ -41,8 +37,6 @@ class CommentTDG extends DBAO{
         $conn = null;
         return $result;
     }
-
-
     public function get_by_authorID($authorID){
         
         try{
@@ -64,8 +58,6 @@ class CommentTDG extends DBAO{
         $conn = null;
         return $result;
     }
-
-
     public function get_by_elemID($elemID, $typeElem){
         
         try{
@@ -88,8 +80,6 @@ class CommentTDG extends DBAO{
         $conn = null;
         return $result;
     }
-
-
     public function get_all_comments(){
         
         try{
@@ -110,8 +100,6 @@ class CommentTDG extends DBAO{
         $conn = null;
         return $result;
     }
-
-
     public function add_comment($authorID, $elemID, $typeElem, $content){
         
         try{
@@ -174,7 +162,6 @@ class CommentTDG extends DBAO{
         $conn = null;
         return $resp;
     }
-
     public function updateContent($content, $id){
         
         try{
@@ -196,7 +183,6 @@ class CommentTDG extends DBAO{
         $conn = null;
         return $resp;
     }
-
     public function get_number_of_likes($commentID) {
         try{
             $conn = $this->connect();
@@ -208,7 +194,6 @@ class CommentTDG extends DBAO{
             $stmt->setFetchMode(PDO::FETCH_ASSOC);
             $result = $stmt->fetch();
         }
-
         catch(PDOException $e)
         {
             echo "Error: " . $e->getMessage();
@@ -218,7 +203,6 @@ class CommentTDG extends DBAO{
         $conn = null;
         return $result["likes"];
     }
-
     public function is_comment_liked_by($commentID, $userID) {
         try{
             $conn = $this->connect();
@@ -231,7 +215,6 @@ class CommentTDG extends DBAO{
             $stmt->setFetchMode(PDO::FETCH_ASSOC);
             $result = $stmt->fetch();
         }
-
         catch(PDOException $e)
         {
             echo "Error: " . $e->getMessage();
@@ -251,7 +234,6 @@ class CommentTDG extends DBAO{
             $stmt->execute();
             $resp =  true;
         }
-
         catch(PDOException $e)
         {
             echo "Error: " . $e->getMessage();
@@ -271,7 +253,6 @@ class CommentTDG extends DBAO{
             $stmt->execute();
             $resp =  true;
         }
-
         catch(PDOException $e)
         {
             $resp =  false;
@@ -280,7 +261,5 @@ class CommentTDG extends DBAO{
         $conn = null;
         return $resp;
     }
-
 }
-
 ?>

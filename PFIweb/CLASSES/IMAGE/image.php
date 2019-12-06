@@ -113,7 +113,7 @@ class Image{
         echo $btnDelete;
         echo "</div></div>";
     }
-
+    
     public function display_comments() {
         include_once __DIR__ . "/../COMMENT/comment.php";
         $TDG = CommentTDG::get_instance();

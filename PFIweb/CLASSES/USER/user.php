@@ -83,6 +83,26 @@ class User{
         $TDG = null;
         return true;
     }
+    
+    public function load_user_id($id){
+        $TDG = UserTDG::get_instance();
+        $res = $TDG->get_by_id($id);
+
+        if(!$res)
+        {
+            $TDG = null;
+            return false;
+        }
+
+        $this->id = $res['id'];
+        $this->email = $res['email'];
+        $this->username = $res['username'];
+        $this->password = $res['password'];
+        $this->pfp = $res['profilePic'];
+
+        $TDG = null;
+        return true;
+    }
 
     public function display_user(){   
         $style = "style='margin-bottom:30px;border:0.2vh solid rgba(57,184,188,1)'";
