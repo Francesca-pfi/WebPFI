@@ -83,7 +83,7 @@ class ImageTDG extends DBAO{
     }
 
     public function add_image($albumID, $url, $descr){
-
+        $descr = validator::sanitize($descr);
 
         try{
             $conn = $this->connect();
@@ -125,17 +125,14 @@ class ImageTDG extends DBAO{
         return $resp;
     }
     public function delete_images_by_albumID($albumID) {
-        try{
-            $images = $this->get_by_albumID($albumID);
+        try{           
             $conn = $this->connect();
             $tableName = $this->tableName;
             $query = "delete from $tableName where albumID=:albumID";
             $stmt = $conn->prepare($query);
             $stmt->bindParam(':albumID', $albumID);
             $stmt->execute();
-            foreach ($images as $image) {
-                unlink("../" . $image["url"]);
-            }
+            
             $resp =  true;
         }
 
@@ -250,6 +247,28 @@ class ImageTDG extends DBAO{
         //fermeture de connection PDO
         $conn = null;
         return $resp;
+    }
+
+    public function search_descr($descr){
+        try{
+            $conn = $this->connect();
+            $tableName = $this->tableName;
+            $query = "SELECT id, albumID, url, descr, nombreVues, date FROM $tableName WHERE descr like :descr";
+            $stmt = $conn->prepare($query);
+            $param = "%" . $descr . "%";
+            $stmt->bindParam(':descr', $param);
+            $stmt->execute();
+            $stmt->setFetchMode(PDO::FETCH_ASSOC);
+            $result = $stmt->fetchAll();
+        }
+
+        catch(PDOException $e)
+        {
+            echo "Error: " . $e->getMessage();
+        }
+        //fermeture de connection PDO
+        $conn = null;
+        return $result;
     }
 } 
 ?>
