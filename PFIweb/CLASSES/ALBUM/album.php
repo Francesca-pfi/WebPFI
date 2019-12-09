@@ -91,7 +91,7 @@ class Album{
 
         echo "<div class='card text-white bg-dark'" . $style . " >";
         echo    "<div class='card-header'>";
-        echo        "<a " . $styleA . "href=\"./album.php?albumID=" . $this->id . "&title=" . $this->title . "\">" . $this->title . "</a>";               
+        echo        "<a " . $styleA . "href=\"./album.php?albumID=" . $this->id . "\">" . $this->title . "</a>";               
         echo    "</div>";        
         echo    "<div class='card-body' " . $border . ">";     
         echo        "<div>". $this->descr ."</div>";        
@@ -128,10 +128,6 @@ class Album{
             $comment = new Comment();
             $comment->load_comment($post['id']);
             $comment->display();
-        }
-  
-        if (!$res){
-        echo "<div><p>No comments yet.</p></div>";
         }
     }
 }

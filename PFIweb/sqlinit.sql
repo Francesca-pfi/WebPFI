@@ -1,8 +1,8 @@
 drop table if exists users;
 drop table if exists albums;
 drop table if exists images;
-drop table if exists commentsAlbums;
-drop table if exists commentsImages;
+drop table if exists comments;
+drop table if exists likes;
 
 CREATE TABLE IF NOT EXISTS users 
 (id INTEGER(10) AUTO_INCREMENT PRIMARY KEY,
@@ -38,4 +38,5 @@ date date NOT NULL);
 CREATE TABLE IF NOT EXISTS likes
 (userID INTEGER(10) NOT NULL,
 elemID INTEGER(10) NOT NULL,
-typeElem varchar(20) NOT NULL);
+typeElem varchar(20) NOT NULL,
+PRIMARY KEY (userID, elemID, typeElem));

@@ -1,6 +1,7 @@
 <?php
   include_once "../CLASSES/IMAGE/image.php";
-  include_once "../CLASSES/ALBUM/album.php";
+  include_once "../CLASSES/COMMENT/comment.php";
+  include __DIR__ . "/../CLASSES/LIKE/likeTDG.php"; 
   include __DIR__ . "/../UTILS/sessionhandler.php";
 
   session_start();
@@ -23,10 +24,13 @@ if (!$TDG->delete_image($imageID)){
 }
 unlink("../" . $image->get_url());
 
-$album = new Album();
-$album->load_album($albumID);
-$albumTitle= $album->get_title();
-header("Location: ../album.php?albumID=$albumID&title=$albumTitle");
+$TDG = CommentTDG::get_instance();
+$TDG->delete_comment_by_elemID($imageID, "image");
+
+$TDG = LikeTDG::get_instance();
+$TDG->delete_likes_by_elemID($imageID, "image");
+
+header("Location: ../album.php?albumID=$albumID");
   die();
 
 ?>
