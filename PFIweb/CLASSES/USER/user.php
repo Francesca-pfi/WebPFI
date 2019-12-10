@@ -234,6 +234,30 @@ class User{
         return $res;
     }
 
+    public function update_user_pfp($email, $pfpUrl){
+
+        //load user infos
+        if(!$this->load_user($email))
+        {
+          return false;
+        }
+
+        //check if passed param are valids
+        if(empty($pfpUrl)){
+          return false;
+        }
+
+        //create TDG and update to new hash
+        $TDG = UserTDG::get_instance();
+        $res = $TDG->update_pfp($pfpUrl, $this->id);
+        if ($res) {
+            $this->pfp = $pfpUrl;
+        }
+        $TDG = null;
+        //only return true if update_user_pw returned true
+        return $res;
+    }
+
     public static function get_username_by_ID($id){
         $TDG = UserTDG::get_instance();
         $res = $TDG->get_by_id($id);

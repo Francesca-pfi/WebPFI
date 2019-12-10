@@ -4,8 +4,6 @@
     include "CLASSES/IMAGE/image.php";
 
     $imageID = $_GET["imageID"];
-    $TDG = ImageTDG::get_instance();
-    $TDG->add_view($imageID);
 
     $title = "Image";
 

@@ -1,6 +1,8 @@
 <?php
     include "../CLASSES/COMMENT/comment.php";
     include __DIR__ . "/../UTILS/sessionhandler.php";
+    include __DIR__ . "/../UTILS/formvalidator.php";
+
     session_start();
     if(!validate_session()){
         header("Location: ../error.php?ErrorMSG=Not logged in");
@@ -8,10 +10,10 @@
     }
     $elemID = $_POST["elemID"];
     $typeElem = $_POST["typeElem"];
-    $content = $_POST["content"];
+    $content = Validator::sanitize($_POST["content"]);
     $userID = $_SESSION["userID"];
-    $TDG = CommentTDG::get_instance();
-    if (!$TDG->add_comment($userID, $elemID, $typeElem, $content)){
+    
+    if (!Comment::add_comment($userID, $elemID, $typeElem, $content)){
         header("Location: ../error.php?ErrorMSG=Could not add comment");
         die();
     }

@@ -1,6 +1,7 @@
 <?php
 include_once __DIR__ . "/imageTDG.PHP";
 include_once __DIR__ . "/../ALBUM/album.php";
+include_once __DIR__ . "/../COMMENT/comment.php";
 
 class Image{
     private $id;
@@ -115,7 +116,6 @@ class Image{
     }
     
     public function display_comments() {
-        include_once __DIR__ . "/../COMMENT/comment.php";
         $TDG = CommentTDG::get_instance();
         $posts = $TDG->get_by_elemID($this->id, 'image');
         $res = false;
@@ -126,10 +126,72 @@ class Image{
             $comment->load_comment($post['id']);
             $comment->display();
         }
-  
-        if (!$res){
-        echo "<div><p>No comments yet.</p></div>";
+    }
+
+    public function add_view($id) {
+        if (!$this->load_image($id)) {
+            return false;
         }
+        $TDG = ImageTDG::get_instance();
+        $resp = $TDG->add_view($id);
+        $TDG = null;
+        return $resp;
+    }
+
+    public function like_image($id, $userID) {
+        if (!$this->load_image($id)) {
+            return false;
+        }
+        $TDG = LikeTDG::get_instance();
+        $resp = $TDG->like_elem($id,"image", $userID);
+        $TDG = null;
+        return $resp;
+    }
+
+    public function unlike_image($id, $userID) {
+        if (!$this->load_image($id)) {
+            return false;
+        }
+        $TDG = LikeTDG::get_instance();
+        $resp = $TDG->unlike_elem($id,"image", $userID);
+        $TDG = null;
+        return $resp;
+    }
+
+    //STATIC FUNCTIONS
+
+    public static function add_image($albumID, $url, $descr) {
+        $TDG = ImageTDG::get_instance();
+        $resp = $TDG->add_image($albumID, $url, $descr);
+        $TDG = null;
+        return $resp;
+    }
+
+    public static function delete_image($id){
+        $TDG = ImageTDG::get_instance();
+        $resp = $TDG->delete_image($id);
+        if ($resp) {
+            $TDG = LikeTDG::get_instance();
+            $TDG->delete_likes_by_elemID($id,"image");
+            Comment::delete_comment_by_elem($id, "image");
+        }
+        $TDG = null;
+        return $resp;
+    }
+
+    public static function delete_image_by_albumID($albumID){
+        $TDG = ImageTDG::get_instance();
+        $res = $TDG->get_by_albumID($albumID);
+        if (!$res) {
+            return false;
+        }
+
+        foreach ($res as $row) {
+            Image::delete_image($row["id"]);
+        }
+
+        $TDG = null;
+        return true;
     }
 }
 ?>
