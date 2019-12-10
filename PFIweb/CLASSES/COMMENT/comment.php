@@ -69,26 +69,44 @@ class Comment{
     public function display() {
         $author = new User();
         $author->load_user_id($this->authorID);
+        $TDG = CommentTDG::get_instance();
+        $nbLikes = $TDG->get_number_of_likes($this->id);
+        $btnLike  = "Login to like comments";
+        $btnDelete = "";
+        $editbox = "<div class='card-footer'>
+            <input type='hidden' id='elemID' name='elemID' value='" . $_GET["imageID"] . "'>
+            <input type='hidden' id='typeElem' name='typeElem' value='album'>
+            <textarea class='form-control' name='content' id='content' rows='7' placeholder='What do you think about this album?' required></textarea><br>
+            <button class='btn btn-success' type='submit'>Save</button></div>";
+        if (isset($_SESSION["userID"])) {
+            if ($TDG->is_comment_liked_by($this->id, $_SESSION["userID"])) {
+                $btnLike = "<form class='d-inline' action='DOMAINLOGIC/unlikeComment.dom.php' method='post'>
+                <input type='hidden'  id='commentID' name='commentID' value='$this->id'>
+                <input class='btn btn-danger m-1' type='submit' value='Unlike'></form>";
+            }
+            else {
+                $btnLike = "<form class='d-inline' action='DOMAINLOGIC/likeComment.dom.php' method='post'>
+                <input type='hidden' id='commentID' name='commentID' value='$this->id'>
+                <input class='btn btn-primary m-1' type='submit' value='Like'></form>";
+            }
+            if ( $_SESSION["userID"] == $this->authorID) {
+                $btnDelete = "<form class='d-inline' action='DOMAINLOGIC/deleteComment.dom.php' method='post'>
+                <input type='hidden' id='commentID' name='commentID' value='$this->id'>
+                <button class='btn btn-danger'>Delete</a></form>";
+            }
+        }
         echo "<div class='card' style='text-align:left;margin-top:30px;'>";
         echo "<div class='card-header'>";
         echo    "<img alt='pfp' src='" . $author->get_pfp() . "' height='50px' width='50px'>";
         echo    "<span style='margin:0 1vw'>" . $author->get_username() . "</span>";
-        echo    "<small class='text-muted'>" . $this->date . "</small>";
-        echo "</div>";
+        echo    "<small class='text-muted'>" . $this->date . "</small></div>";
         echo "<div class = 'card-body'>";
         echo "<p class='card-text'>". $this->content . "</p></div>";
-        if (isset($_SESSION["userID"])) {
-            if ( $_SESSION["userID"] == $this->authorID) {
-                echo "<div class='card-footer'> ";
-                echo "<form action='DOMAINLOGIC/deleteComment.php' method='post'>";
-                echo "<input type='hidden' id='elemID' name='elemID' value='" . $this->elemID . "'>";
-                echo "<input type='hidden' id='typeElem' name='typeElem' value='" . $this->typeElem . "'>";
-                echo "<input type='hidden' id='commentID' name='commentID' value='" . $this->id . "'>";
-                echo "<button class='btn btn-danger'>Delete</a>";
-                echo "</form></div>";
-            }
-        }
-        echo "</div>";
+        echo "<div class='card-footer'>";
+        echo "<span class='badge badge-primary m-1'>$nbLikes likes</span>";
+        echo $btnLike;
+        echo $btnDelete;
+        echo "</div></div>";
     }
 }
 ?>

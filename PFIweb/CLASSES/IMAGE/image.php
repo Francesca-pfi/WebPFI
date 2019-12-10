@@ -126,10 +126,6 @@ class Image{
             $comment->load_comment($post['id']);
             $comment->display();
         }
-  
-        if (!$res){
-        echo "<div><p>No comments yet.</p></div>";
-        }
     }
 }
 ?>

@@ -142,8 +142,10 @@ class CommentTDG extends DBAO{
         $conn = null;
         return $resp;
     }
-    public function delete_comment_by_elemID($elemId, $typeElem) {
+    public function delete_comment_by_elemID($elemID, $typeElem) {
         try{
+            echo $elemID;
+            echo $typeElem;
             $conn = $this->connect();
             $tableName = $this->tableName;
             $query = "delete from $tableName WHERE elemID=:elemID and typeElem=:typeElem";
@@ -156,6 +158,7 @@ class CommentTDG extends DBAO{
         
         catch(PDOException $e)
         {
+            echo "Error: " . $e->getMessage();
             $resp = false;
         }
         //fermeture de connection PDO

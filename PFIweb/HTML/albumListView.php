@@ -1,15 +1,11 @@
-<?php
-    include_once __DIR__ . "/../CLASSES/ALBUM/album.php";
-    $TDG = AlbumTDG::get_instance();
-    $albums = $TDG->get_all_albums();
-?>
-
 <h3 class="my-4">Albums</h3>
 <?php
-    foreach($albums as $album){
-        $display = new Album();
-        $display->load_album($album['id']);
+    include_once __DIR__ . "/../CLASSES/ALBUM/album.php";
 
-        $display->display_album();        
+    $albums = Album::list_all_albums();
+    $albums = Album::create_album_list($albums);
+
+    foreach($albums as $album){
+        $album->display_album();        
     }
 ?>

@@ -29,8 +29,37 @@ class Album{
         return $this->userID;
     }
 
+    public function get_nombreVues(){
+        return $this->nombreVues;
+    }
+
     public function get_date(){
         return $this->date;
+    }
+
+    //setters
+    public function set_id($id){
+        $this->id = $id;
+    }
+
+    public function set_title($title){
+        $this->title = $title;
+    }
+
+    public function set_descr($descr){
+        $this->descr = $descr;
+    }
+
+    public function set_userID($userID){
+        $this->userID = $userID;
+    }
+
+    public function set_nombreVues($nombreVues){
+        $this->nombreVues = $nombreVues;
+    }
+
+    public function set_date($date){
+        $this->date = $date;
     }
     
     public function load_album($albumID){
@@ -91,7 +120,7 @@ class Album{
 
         echo "<div class='card text-white bg-dark'" . $style . " >";
         echo    "<div class='card-header'>";
-        echo        "<a " . $styleA . "href=\"./album.php?albumID=" . $this->id . "&title=" . $this->title . "\">" . $this->title . "</a>";               
+        echo        "<a " . $styleA . "href=\"./album.php?albumID=" . $this->id . "\">" . $this->title . "</a>";               
         echo    "</div>";        
         echo    "<div class='card-body' " . $border . ">";     
         echo        "<div>". $this->descr ."</div>";        
@@ -103,12 +132,13 @@ class Album{
         echo        $btnLike;
         echo        $btnDelete;
         echo    "</div>";        
-        echo "</div>";
-
-        
+        echo "</div>";       
     }
 
-    public function display_images_preview() {       
+    public function display_images_preview() {          
+        $TDG = AlbumTDG::get_instance();
+        $TDG->add_view($this->id);
+
         $TDG = ImageTDG::get_instance();
         $images = $TDG->get_by_albumID($this->id);
         foreach($images as $image){
@@ -129,10 +159,71 @@ class Album{
             $comment->load_comment($post['id']);
             $comment->display();
         }
-  
-        if (!$res){
-        echo "<div><p>No comments yet.</p></div>";
+    }
+
+    //STATIC FUNCTIONS
+
+    public static function list_all_albums(){
+        $TDG = AlbumTDG::get_instance();
+        $res = $TDG->get_all_albums();
+        $TDG = null;
+        
+        return $res;
+    }
+
+    public static function create_album_list($TDG_res){
+        $albums_list = array();
+        foreach($TDG_res as $r){
+            $album = new Album();
+
+            $album->set_id($r["id"]);
+            $album->set_title($r["title"]);
+            $album->set_descr($r["descr"]);
+            $album->set_userID($r["userID"]);
+            $album->set_nombreVues($r["nombreVues"]);
+            $album->set_date($r["date"]);
+
+            array_push($albums_list, $album);
         }
+        return $albums_list;
+    }
+
+    public static function delete_album($id){
+        $TDG = AlbumTDG::get_instance();
+        $TDG->delete_album($id);
+        $TDG = null;
+    }
+
+    public static function like_album($albumID,$userID){
+        $TDG = AlbumTDG::get_instance();
+        $TDG->like_album($albumID,$userID);
+        $TDG = null;
+    }
+
+    public static function add_album($title,$descr,$userID){
+        $TDG = AlbumTDG::get_instance();
+        $TDG->add_album($title,$descr,$userID,date("Y/m/d"));
+        $TDG = null;
+    }
+
+    public static function unlike_album($albumID,$userID){
+        $TDG = AlbumTDG::get_instance();
+        $TDG->unlike_album($albumID,$userID);
+        $TDG = null;
+    }
+
+    public static function search_title($title){
+        $TDG = AlbumTDG::get_instance();
+        $res = $TDG->search_title($title);
+        $TDG = null;
+        return $res;
+    }
+
+    public static function get_by_userID($userID){
+        $TDG = AlbumTDG::get_instance();
+        $albums = $TDG->get_by_userID($userID);
+        $TDG = null;
+        return $albums;
     }
 }
 ?>
