@@ -1,6 +1,4 @@
 <?php 
-    include_once __DIR__ . "/../CLASSES/IMAGE/image.php"; 
-    include_once __DIR__ . "/../CLASSES/ALBUM/album.php"; 
     $image = new Image();
     $image->add_view($_GET["imageID"]);
 ?>

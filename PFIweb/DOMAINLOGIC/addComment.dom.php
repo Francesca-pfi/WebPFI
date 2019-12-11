@@ -8,6 +8,7 @@
         header("Location: ../error.php?ErrorMSG=Not logged in");
         die();
     }
+
     $elemID = $_POST["elemID"];
     $typeElem = $_POST["typeElem"];
     $content = Validator::sanitize($_POST["content"]);

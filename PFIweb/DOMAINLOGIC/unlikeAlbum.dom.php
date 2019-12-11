@@ -9,7 +9,10 @@
         die();
     }
 
-    Album::unlike_album($_POST["albumID"],$_SESSION["userID"]);
+    if (!Album::unlike_album($_POST["albumID"],$_SESSION["userID"])){
+        header("Location: ../error.php?ErrorMSG=Could not unlike album");
+        die();
+    }
 
     header("Location: ../billboard.php");
     die();

@@ -12,7 +12,7 @@
   }
 
   $email = $_POST["email"];
-  $username = $_POST["username"];
+  $username = Validator::sanitize($_POST["username"]);
 
   //verification des parametres
   if(empty($email) && empty($username)){

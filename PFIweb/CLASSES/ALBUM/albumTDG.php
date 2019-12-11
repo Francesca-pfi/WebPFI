@@ -171,46 +171,6 @@ class AlbumTDG extends DBAO{
         return $result["count"] > 0;
     }
 
-    public function like_album($albumID, $userID) {
-        try{
-            $conn = $this->connect();
-            $query = "insert into likes values(:userID,:albumID,'album')";
-            $stmt = $conn->prepare($query);
-            $stmt->bindParam(':userID', $userID);
-            $stmt->bindParam(':albumID', $albumID);
-            $stmt->execute();
-            $resp =  true;
-        }
-
-        catch(PDOException $e)
-        {
-            echo "Error: " . $e->getMessage();
-            $resp =  false;
-        }
-        //fermeture de connection PDO
-        $conn = null;
-        return $resp;
-    }
-    public function unlike_album($albumID, $userID) {
-        try{
-            $conn = $this->connect();
-            $query = "delete from likes where userID=:userID and elemID=:albumID and typeElem='album'";
-            $stmt = $conn->prepare($query);
-            $stmt->bindParam(':userID', $userID);
-            $stmt->bindParam(':albumID', $albumID);
-            $stmt->execute();
-            $resp =  true;
-        }
-
-        catch(PDOException $e)
-        {
-            $resp =  false;
-        }
-        //fermeture de connection PDO
-        $conn = null;
-        return $resp;
-    }
-
     public function add_album($title,$descr,$userID,$date){
         try{
             $title = validator::sanitize($title);

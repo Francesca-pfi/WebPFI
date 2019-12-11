@@ -13,7 +13,7 @@
 
     //prendre les variables du Post
     $email = $_POST["email"];
-    $username = $_POST["username"];
+    $username = Validator::sanitize($_POST["username"]);
     $pw = $_POST["pw"];
     $pwv = $_POST["pwValidation"];
 

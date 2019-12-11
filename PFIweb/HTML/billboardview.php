@@ -1,5 +1,5 @@
 <?php
-  if(isset($_SESSION["userID"])){
+  if(validate_session()){
     $name = $_SESSION["userName"];
   }
   else{
@@ -23,7 +23,6 @@
         </div>
         <div class="col-sm-3 mb-4">
             <?php include "albumCreationView.php"; ?>
-            <?//php include "mostvisitedview.php"; ?>
         </div>
     </div>
 </div>

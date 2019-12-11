@@ -74,7 +74,7 @@ class Image{
 
     //display
     public function display_preview(){
-        echo "<a href=image.php?imageID=$this->id><img alt='$this->descr' src='$this->url' height='100px' class='m-1'></a>";
+        echo "<a href=image.php?imageID=$this->id><img alt='$this->descr' src='$this->url' height='150px' class='m-1'></a>";
     }
     public function display(){
         $style = "style='margin-bottom:30px;border:0.5vh solid rgba(57,184,188,1)'";
@@ -101,18 +101,11 @@ class Image{
                 </form>";
             }
         }
-        echo "<div class='d-block card text-white bg-dark w-95'" . $style . " >";
-        echo "<div class='card-header'>";
-        echo "<img alt='$this->descr' src='$this->url'>";
-        echo "</div><div class='card-body'>";
-        echo "<p class='card-text'>$this->descr</p>";
-        echo "<p class='card-text'><small class='text-muted'>Added on $this->date</small></p>";
-        echo "</div><div class='card-footer'>";
-        echo "<span class='badge badge-primary m-1'>$nbLikes likes</span>";
-        echo "<span class='badge badge-secondary m-1'>$this->nombreVues views</span>";
-        echo $btnLike;
-        echo $btnDelete;
-        echo "</div></div>";
+        $descr = $this->descr;
+        $date = $this->date;
+        $url = $this->url;
+        $nbVues = $this->nombreVues;
+        include __DIR__ . "/imagetemplate.php";
     }
     
     public function display_comments() {
@@ -142,6 +135,9 @@ class Image{
         if (!$this->load_image($id)) {
             return false;
         }
+        if (empty($userID)) {
+            return false;
+        }
         $TDG = LikeTDG::get_instance();
         $resp = $TDG->like_elem($id,"image", $userID);
         $TDG = null;
@@ -150,6 +146,9 @@ class Image{
 
     public function unlike_image($id, $userID) {
         if (!$this->load_image($id)) {
+            return false;
+        }
+        if (empty($userID)) {
             return false;
         }
         $TDG = LikeTDG::get_instance();
@@ -161,6 +160,9 @@ class Image{
     //STATIC FUNCTIONS
 
     public static function add_image($albumID, $url, $descr) {
+        if (empty($albumID) || empty($url)) {
+            return false;
+        }
         $TDG = ImageTDG::get_instance();
         $resp = $TDG->add_image($albumID, $url, $descr);
         $TDG = null;
@@ -168,6 +170,9 @@ class Image{
     }
 
     public static function delete_image($id){
+        if (empty($id)) {
+            return false;
+        }
         $TDG = ImageTDG::get_instance();
         $resp = $TDG->delete_image($id);
         if ($resp) {
@@ -180,8 +185,10 @@ class Image{
     }
 
     public static function delete_image_by_albumID($albumID){
-        $TDG = ImageTDG::get_instance();
-        $res = $TDG->get_by_albumID($albumID);
+        if (empty($albumID)) {
+            return false;
+        }
+        $res = Image::get_by_albumID($albumID);
         if (!$res) {
             return false;
         }

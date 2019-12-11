@@ -1,6 +1,4 @@
 <?php
-    include_once __DIR__ . "/../CLASSES/ALBUM/album.php";  
-    
     if(!validate_session()){
         die;
     }
@@ -13,7 +11,7 @@
         <form method = "post" action = "./DOMAINLOGIC/newAlbum.dom.php?">
             <div class="form-group" style='margin-bottom:0'>
                 <label for="titre" style='font-size:1.3em'>Titre :</label>
-                <input type="text" name="title" id="title">
+                <input type="text" name="title" id="title" required>
                 <label for="contenu" style='font-size:1.3em'>Description :</label>
                 <textarea type="text" class="form-control" name="descr" id="descr" rows='5'></textarea><br>                
             </div>                       

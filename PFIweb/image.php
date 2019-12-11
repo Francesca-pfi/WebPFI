@@ -2,6 +2,7 @@
     session_start();
     include "UTILS/sessionhandler.php";
     include "CLASSES/IMAGE/image.php";
+    include_once "CLASSES/ALBUM/album.php"; 
 
     $imageID = $_GET["imageID"];
 

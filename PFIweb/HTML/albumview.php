@@ -1,6 +1,4 @@
 <?php
-    include_once __DIR__ . "/../CLASSES/ALBUM/album.php";  
-    
     $album = new Album();
     $album->load_album($_GET["albumID"]);
 ?>

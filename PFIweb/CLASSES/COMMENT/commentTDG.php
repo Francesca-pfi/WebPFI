@@ -227,42 +227,5 @@ class CommentTDG extends DBAO{
         $conn = null;
         return $result["count"] > 0;
     }
-    public function like_comment($commentID, $userID) {
-        try{
-            $conn = $this->connect();
-            $query = "insert into likes values(:userID,:commentID,'comment')";
-            $stmt = $conn->prepare($query);
-            $stmt->bindParam(':userID', $userID);
-            $stmt->bindParam(':commentID', $commentID);
-            $stmt->execute();
-            $resp =  true;
-        }
-        catch(PDOException $e)
-        {
-            echo "Error: " . $e->getMessage();
-            $resp =  false;
-        }
-        //fermeture de connection PDO
-        $conn = null;
-        return $resp;
-    }
-    public function unlike_comment($commentID, $userID) {
-        try{
-            $conn = $this->connect();
-            $query = "delete from likes where userID=:userID and elemID=:commentID and typeElem='comment'";
-            $stmt = $conn->prepare($query);
-            $stmt->bindParam(':userID', $userID);
-            $stmt->bindParam(':commentID', $commentID);
-            $stmt->execute();
-            $resp =  true;
-        }
-        catch(PDOException $e)
-        {
-            $resp =  false;
-        }
-        //fermeture de connection PDO
-        $conn = null;
-        return $resp;
-    }
 }
 ?>

@@ -247,14 +247,13 @@ class User{
           return false;
         }
 
-        //create TDG and update to new hash
         $TDG = UserTDG::get_instance();
         $res = $TDG->update_pfp($pfpUrl, $this->id);
         if ($res) {
             $this->pfp = $pfpUrl;
         }
         $TDG = null;
-        //only return true if update_user_pw returned true
+
         return $res;
     }
 

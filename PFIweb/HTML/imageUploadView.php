@@ -1,6 +1,4 @@
-<?php
-    include_once __DIR__ . "/../CLASSES/ALBUM/album.php";  
-    
+<?php 
     if(!validate_session()){
         die;
     }

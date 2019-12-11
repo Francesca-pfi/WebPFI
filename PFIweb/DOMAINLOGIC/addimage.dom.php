@@ -1,7 +1,7 @@
 <?php
   include_once "../CLASSES/IMAGE/image.php";
   include_once "../CLASSES/ALBUM/album.php";
-  include __DIR__ . "/../UTILS/sessionhandler.php";
+  include_once __DIR__ . "/../UTILS/sessionhandler.php";
   include_once __DIR__ . "/../UTILS/formvalidator.php";
 
   session_start();
@@ -11,7 +11,7 @@ if(!validate_session()){
     die();
 }
 
-if(isset($_FILES["file"]) && isset($_POST["albumID"]) && isset($_POST["descr"])){
+if(!empty($_FILES["file"]) && !empty($_POST["albumID"]) && isset($_POST["descr"])){
     $file = $_FILES["file"];
 
     $target_dir = "MEDIAS/album_medias/";
@@ -29,11 +29,12 @@ if(isset($_FILES["file"]) && isset($_POST["albumID"]) && isset($_POST["descr"]))
     $url = $target_dir . $file_name . "." . $media_file_type;
     move_uploaded_file($file['tmp_name'], "../" . $url);
 
-    if (!Image::add_image($_POST["albumID"], $url, $_POST["descr"])) {
+    $descr = Validator::sanitize($_POST["descr"]);
+
+    if (!Image::add_image($_POST["albumID"], $url, $descr)) {
         header("Location: ../error.php?ErrorMSG=Coudld not upload file");
         die();
     }
-
 }
 else {
     header("Location: ../error.php?ErrorMSG=Missing inputs");

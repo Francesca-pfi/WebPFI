@@ -1,6 +1,7 @@
 <?php
     session_start();
-    include "UTILS/sessionhandler.php";
+    include_once "UTILS/sessionhandler.php";
+    include_once "CLASSES/ALBUM/album.php";  
 
     $title = "Album";
 

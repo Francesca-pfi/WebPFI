@@ -15,7 +15,7 @@ $image->load_image($imageID);
 $albumID = $image->get_albumID();
 
 if (!Image::delete_image($imageID)){
-    header("Location: ../error.php?ErrorMSG=Could not like image");
+    header("Location: ../error.php?ErrorMSG=Could not delete image");
     die();
 }
 unlink("../" . $image->get_url());

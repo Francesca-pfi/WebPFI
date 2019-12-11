@@ -190,6 +190,9 @@ class Album{
     }
 
     public static function delete_album($id){
+        if (empty($id)){
+            return false;
+        }
         $TDG = AlbumTDG::get_instance();
         $resp = $TDG->delete_album($id);
         if ($resp) {
@@ -203,21 +206,33 @@ class Album{
     }
 
     public static function like_album($albumID,$userID){
-        $TDG = AlbumTDG::get_instance();
-        $TDG->like_album($albumID,$userID);
+        if (empty($albumID) || empty($userID)){
+            return false;
+        }
+        $TDG = LikeTDG::get_instance();
+        $resp = $TDG->like_elem($albumID,"album",$userID);
         $TDG = null;
+        return $resp;
     }
 
     public static function add_album($title,$descr,$userID){
+        if (empty($title) || empty($userID)){
+            return false;
+        }
         $TDG = AlbumTDG::get_instance();
-        $TDG->add_album($title,$descr,$userID,date("Y/m/d"));
+        $resp = $TDG->add_album($title,$descr,$userID,date("Y/m/d"));
         $TDG = null;
+        return $resp;
     }
 
     public static function unlike_album($albumID,$userID){
-        $TDG = AlbumTDG::get_instance();
-        $TDG->unlike_album($albumID,$userID);
+        if (empty($albumID) || empty($userID)){
+            return false;
+        }
+        $TDG = LikeTDG::get_instance();
+        $resp = $TDG->unlike_elem($albumID,"album",$userID);
         $TDG = null;
+        return $resp;
     }
 
     public static function search_title($title){

@@ -1,6 +1,6 @@
 <?php
 
-    if(isset($_SESSION["userID"])){
+    if(validate_session()){
         $navLinks = '       
         <li class="nav-item">
             <a class="nav-link" href="DOMAINLOGIC/logout.dom.php">LOGOUT</a>

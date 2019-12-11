@@ -1,6 +1,6 @@
 <?php 
   $addComm;
-  if (isset($_SESSION["userID"])) {
+  if (validate_session()) {
     $addComm = "
     <input type='hidden' id='elemID' name='elemID' value='" . $_GET["imageID"] . "'>
     <input type='hidden' id='typeElem' name='typeElem' value='image'>
