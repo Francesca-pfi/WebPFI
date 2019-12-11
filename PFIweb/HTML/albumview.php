@@ -10,7 +10,6 @@
     <div class="row justify-content-md-center">
         <div class="col-sm-8 mb-4">
             <?php 
-                //include "imagelistview.php";
                 $album->display_images_preview();
             ?>
             <br>
