@@ -1,7 +1,6 @@
 <?php
   include_once "../CLASSES/IMAGE/image.php";
-  include_once "../CLASSES/ALBUM/album.php";
-  include __DIR__ . "/../UTILS/sessionhandler.php";
+  include_once __DIR__ . "/../UTILS/sessionhandler.php";
 
   session_start();
 
@@ -15,18 +14,14 @@ $image = new Image();
 $image->load_image($imageID);
 $albumID = $image->get_albumID();
 
-$TDG = ImageTDG::get_instance();
-
-if (!$TDG->delete_image($imageID)){
+if (!Image::delete_image($imageID)){
     header("Location: ../error.php?ErrorMSG=Could not like image");
     die();
 }
 unlink("../" . $image->get_url());
 
-$album = new Album();
-$album->load_album($albumID);
-$albumTitle= $album->get_title();
-header("Location: ../album.php?albumID=$albumID&title=$albumTitle");
+
+header("Location: ../album.php?albumID=$albumID");
   die();
 
 ?>

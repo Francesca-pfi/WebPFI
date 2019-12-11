@@ -13,7 +13,6 @@ if(!validate_session()){
 
 if(isset($_FILES["file"]) && isset($_POST["albumID"]) && isset($_POST["descr"])){
     $file = $_FILES["file"];
-    $TDG = ImageTDG::get_instance();
 
     $target_dir = "MEDIAS/album_medias/";
     $media_file_type = pathinfo($file['name'] ,PATHINFO_EXTENSION);
@@ -30,7 +29,7 @@ if(isset($_FILES["file"]) && isset($_POST["albumID"]) && isset($_POST["descr"]))
     $url = $target_dir . $file_name . "." . $media_file_type;
     move_uploaded_file($file['tmp_name'], "../" . $url);
 
-    if (!$TDG->add_image($_POST["albumID"], $url, $_POST["descr"])) {
+    if (!Image::add_image($_POST["albumID"], $url, $_POST["descr"])) {
         header("Location: ../error.php?ErrorMSG=Coudld not upload file");
         die();
     }

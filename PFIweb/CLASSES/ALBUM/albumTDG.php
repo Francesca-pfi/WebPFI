@@ -244,7 +244,7 @@ class AlbumTDG extends DBAO{
             $stmt = $conn->prepare($query);
             $stmt->bindParam(':id', $id);
             $stmt->execute();
-            $resp =  true;
+            $resp = true;
         }
 
         catch(PDOException $e)

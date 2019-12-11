@@ -12,9 +12,9 @@
     $imageID = $_POST["imageID"];
     $userID = $_SESSION["userID"];
 
-    $TDG = ImageTDG::get_instance();
+    $image = new Image();
 
-    if (!$TDG->like_image($imageID,$userID)){
+    if (!$image->like_image($imageID,$userID)){
         header("Location: ../error.php?ErrorMSG=Could not like image");
         die();
     }

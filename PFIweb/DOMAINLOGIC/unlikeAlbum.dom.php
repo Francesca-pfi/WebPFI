@@ -9,15 +9,7 @@
         die();
     }
 
-    $albumID = $_POST["albumID"];
-    $userID = $_SESSION["userID"];
-
-    $TDG = AlbumTDG::get_instance();
-
-    if (!$TDG->unlike_album($albumID,$userID)){
-        header("Location: ../error.php?ErrorMSG=Could not unlike image");
-        die();
-    }
+    Album::unlike_album($_POST["albumID"],$_SESSION["userID"]);
 
     header("Location: ../billboard.php");
     die();

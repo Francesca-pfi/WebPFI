@@ -209,28 +209,28 @@ class UserTDG extends DBAO{
         return $resp;
     }
 
-    public function update_pfp($file, $id) {
-        $target_dir = "MEDIAS/PFPs/";
+    public function update_pfp($url, $id) {
+        //$target_dir = "MEDIAS/PFPs/";
 
-        $media_file_type = pathinfo($file['name'] ,PATHINFO_EXTENSION);
+        //$media_file_type = pathinfo($file['name'] ,PATHINFO_EXTENSION);
         //$media_file_ext = strtolower(end(explode('.',$_FILES['Media']['name'])));
   
-        $img_extensions_arr = array("jpg","jpeg","png","gif");
+        //$img_extensions_arr = array("jpg","jpeg","png","gif");
 
-        if(!in_array($media_file_type, $img_extensions_arr)){
-            return false;
-        }
+        //if(!in_array($media_file_type, $img_extensions_arr)){
+            //return false;
+        //}
 
         //creation d'un nom unique pour la "PATH" du fichier
-        $path = tempnam("MEDIAS/PFPs", '');
-        unlink($path);
-        $file_name = basename($path, ".tmp");
+        //$path = tempnam("MEDIAS/PFPs", '');
+        //unlink($path);
+        //$file_name = basename($path, ".tmp");
     
         //creation de l'url pour la DB
-        $url = $target_dir . $file_name . "." . $media_file_type;
+        //$url = $target_dir . $file_name . "." . $media_file_type;
     
         //deplacement du fichier uploader vers le bon repertoire (Medias)
-        move_uploaded_file($file['tmp_name'], "../" . $url);
+        //move_uploaded_file($file['tmp_name'], "../" . $url);
 
         //create entry in database
         //Media::create_entry($type, $url, $title);
@@ -243,10 +243,7 @@ class UserTDG extends DBAO{
             $stmt->bindParam(':id', $id);
             $stmt->execute();
             $resp = true;
-
-            $_SESSION["userPFP"] = $url;
         }
-
         catch(PDOException $e)
         {
             $resp = false;

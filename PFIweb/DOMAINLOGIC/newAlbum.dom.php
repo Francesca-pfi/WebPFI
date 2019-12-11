@@ -4,9 +4,7 @@
     include "../CLASSES/ALBUM/album.php";
     include_once __DIR__ . "/../UTILS/formvalidator.php";
     
-    $TDG = AlbumTDG::get_instance();
-
-    $TDG->add_album($_POST["title"],$_POST["descr"],$_SESSION["userID"],date("Y/m/d"));
+    Album::add_album($_POST["title"],$_POST["descr"],$_SESSION["userID"]);
 
     header("Location: ../billboard.php");
     die();
