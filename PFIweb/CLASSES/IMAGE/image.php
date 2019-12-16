@@ -67,10 +67,10 @@ class Image{
         }
 
         $this->id = $res['id'];
-        $this->albumID = $res['albumID'];;
-        $this->url = $res['url'];;
-        $this->descr = $res['descr'];;
-        $this->nombreVues = $res['nombreVues'];;
+        $this->albumID = $res['albumID'];
+        $this->url = $res['url'];
+        $this->descr = $res['descr'];
+        $this->nombreVues = $res['nombreVues'];
         $this->type = $res['type'];
         $this->date = $res['date'];;
 
@@ -81,14 +81,15 @@ class Image{
     //display
     public function display_preview(){
         if ($this->type == "image") {
-        echo "<a href=image.php?imageID=$this->id><img alt='$this->descr' src='$this->url' height='150px' class='m-1'></a>";
-        } else if ($this->type == "video") {
-             echo "<a href=image.php?imageID=$this->id><video height='150' class='m-1 align-middle' autoplay loop>
-                    <source src='$this->url'>
-                    ?
-                    </video></a>";
-        }
+            echo "<a href=image.php?imageID=$this->id><img alt='$this->descr' src='$this->url' height='150px' class='m-1'></a>";
+            } else if ($this->type == "video") {
+                 echo "<a href=image.php?imageID=$this->id><video height='150' class='m-1 align-middle' autoplay loop>
+                        <source src='$this->url'>
+                        ?
+                        </video></a>";
+            }
     }
+    
     public function display(){
         $style = "style='margin-bottom:30px;border:0.5vh solid rgba(57,184,188,1)'";
         $TDG = ImageTDG::get_instance();
@@ -100,7 +101,7 @@ class Image{
                 $btnDelete = "<form class='d-inline' action='DOMAINLOGIC/deleteImage.dom.php' method='post'>
                 <input type='hidden' name='imageID' value='$this->id'>
                 <input class='btn btn-danger m-1' type='submit' value='Delete'>
-              </form>";
+                </form>";
             if ($TDG->is_image_liked_by($this->id, $_SESSION["userID"])) {
                 $btnLike = /*"<form class='d-inline' action='DOMAINLOGIC/unlikeImage.dom.php' method='post'>
                 <input type='hidden' name='imageID' value='$this->id'>
@@ -128,15 +129,17 @@ class Image{
     }
     
     public function display_comments() {
+        $compteur = 1;
         $TDG = CommentTDG::get_instance();
         $posts = $TDG->get_by_elemID($this->id, 'image');
         $res = false;
   
-        foreach($posts as $post) {
+        for ($i = count($posts) - 1; $i >= 0; $i--) {
             $res = true;
             $comment = new Comment();
-            $comment->load_comment($post['id']);
-            $comment->display();
+            $comment->load_comment($posts[$i]['id']);
+            $comment->display($compteur);
+            $compteur += 1;
         }
     }
 
@@ -220,11 +223,6 @@ class Image{
         return true;
     }
 
-    public static function get_by_albumID($albumID){
-        $TDG = ImageTDG::get_instance();
-        return $TDG->get_by_albumID($albumID);
-    }
-
     public static function create_list_by_albumID($albumID){
         $res = Image::get_by_albumID($albumID);
         $lst = array();
@@ -233,6 +231,24 @@ class Image{
             $img->load_image($res["id"]);
             array_push($lst,$img);
         }
+    }
+
+    public static function create_image_list($res){        
+        $lst = array();
+        foreach ($res as $row) {
+            $img = new Image();
+            $img->load_image($row["id"]);
+            array_push($lst,$img);
+        }
+
+        return $lst;
+    }
+
+    public static function search_descr($descr){
+        $TDG = ImageTDG::get_instance();
+        $res = $TDG->search_descr($descr);
+        $TDG = null;
+        return $res;
     }
 }
 ?>

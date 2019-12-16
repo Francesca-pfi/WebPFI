@@ -253,7 +253,7 @@ class User{
             $this->pfp = $pfpUrl;
         }
         $TDG = null;
-
+        
         return $res;
     }
 
@@ -262,5 +262,23 @@ class User{
         $res = $TDG->get_by_id($id);
         $TDG = null;
         return $res["username"];
+    }
+
+    public static function create_users_list($res){        
+        $lst = array();
+        foreach ($res as $row) {
+            $img = new User();
+            $img->load_user_id($row["id"]);
+            array_push($lst,$img);
+        }
+
+        return $lst;
+    }
+
+    public static function search_name($name){
+        $TDG = UserTDG::get_instance();
+        $res = $TDG->search_name($name);
+        $TDG = null;
+        return $res;
     }
 }

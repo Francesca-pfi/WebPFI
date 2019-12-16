@@ -1,4 +1,4 @@
-<?php
+<?php    
     $album = new Album();
     $album->load_album($_GET["albumID"]);
 ?>
@@ -7,7 +7,7 @@
   <h1 class="mb-4" ><?php echo $album->get_title() ?> </h1>
     <div class="row justify-content-md-center">
         <div class="col-sm-8 mb-4">
-            <div id='medias'>
+        <div id='medias'>
                 <?php 
                     $album->display_images_preview();
                 ?>
@@ -17,7 +17,8 @@
                     $album->display_comments();
                     include "addcommentalbumview.php";
                 ?>
-            </div>
+                <button id="comments-load-btn" type="button" class="btn btn-primary" name="button">More comments!</button>
+            </div>           
         </div>
         <div class="col-sm-3 mb-4">
             <?php 

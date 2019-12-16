@@ -27,7 +27,7 @@
 ?>
 
 
-<div class="jumbotron text-center" style="margin-bottom:0">
+<div class="jumbotron text-center" id="headerTop">
     <div class="container">
         <h1>Not a Forum</h1>
         <p>or maybe it is, who knows?</p>
@@ -35,7 +35,7 @@
 </div>
 
 
-<nav class="navbar navbar-expand-sm bg-dark navbar-dark mb-4">
+<nav class="navbar navbar-expand-sm navbar-dark" id="headerNav">
     <div class="container collapse navbar-collapse">
         <ul class="navbar-nav mr-auto">
             <?php
@@ -48,7 +48,7 @@
 
         <form class="form-inline my-2 my-lg-0" action="billboard.php" method="post">
             <input class="form-control mr-sm-2" type="text" placeholder="Search" name="search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
         </form>
     </div>
 </nav>
