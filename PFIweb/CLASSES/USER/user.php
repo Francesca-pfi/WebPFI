@@ -247,13 +247,14 @@ class User{
           return false;
         }
 
+        //create TDG and update to new hash
         $TDG = UserTDG::get_instance();
         $res = $TDG->update_pfp($pfpUrl, $this->id);
         if ($res) {
             $this->pfp = $pfpUrl;
         }
         $TDG = null;
-
+        //only return true if update_user_pw returned true
         return $res;
     }
 
@@ -262,5 +263,23 @@ class User{
         $res = $TDG->get_by_id($id);
         $TDG = null;
         return $res["username"];
+    }
+
+    public static function create_users_list($res){        
+        $lst = array();
+        foreach ($res as $row) {
+            $img = new User();
+            $img->load_user_id($row["id"]);
+            array_push($lst,$img);
+        }
+
+        return $lst;
+    }
+
+    public static function search_name($name){
+        $TDG = UserTDG::get_instance();
+        $res = $TDG->search_name($name);
+        $TDG = null;
+        return $res;
     }
 }

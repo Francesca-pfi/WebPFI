@@ -9,7 +9,6 @@ class Image{
     private $url;
     private $descr;
     private $nombreVues;
-    private $type;
     private $date;
 /*
     public function __construct($idP,$albumID,$urlP,$nombreLikeP,$dateP){
@@ -42,10 +41,6 @@ class Image{
         return $this->nombreVues;
     }
 
-    public function get_type(){
-        return $this->type;
-    }
-
     public function get_date(){
         return $this->date;
     }
@@ -71,7 +66,6 @@ class Image{
         $this->url = $res['url'];;
         $this->descr = $res['descr'];;
         $this->nombreVues = $res['nombreVues'];;
-        $this->type = $res['type'];
         $this->date = $res['date'];;
 
         $TDG = null;
@@ -80,14 +74,7 @@ class Image{
 
     //display
     public function display_preview(){
-        if ($this->type == "image") {
-        echo "<a href=image.php?imageID=$this->id><img alt='$this->descr' src='$this->url' height='150px' class='m-1'></a>";
-        } else if ($this->type == "video") {
-             echo "<a href=image.php?imageID=$this->id><video height='150' class='m-1 align-middle' autoplay loop>
-                    <source src='$this->url'>
-                    ?
-                    </video></a>";
-        }
+        echo "<a href=image.php?imageID=$this->id><img alt='$this->descr' src='$this->url' height='100px' class='m-1'></a>";
     }
     public function display(){
         $style = "style='margin-bottom:30px;border:0.5vh solid rgba(57,184,188,1)'";
@@ -102,41 +89,44 @@ class Image{
                 <input class='btn btn-danger m-1' type='submit' value='Delete'>
               </form>";
             if ($TDG->is_image_liked_by($this->id, $_SESSION["userID"])) {
-                $btnLike = /*"<form class='d-inline' action='DOMAINLOGIC/unlikeImage.dom.php' method='post'>
+                $btnLike = "<form class='d-inline' action='DOMAINLOGIC/unlikeImage.dom.php' method='post'>
                 <input type='hidden' name='imageID' value='$this->id'>
                 <input class='btn btn-danger m-1' type='submit' value='Unlike'>
-                </form>";*/
-                "<button id='btnUnlikeimage$this->id' class='btn btn-danger' onclick='unlike($this->id,\"image\")'>Unlike</button>
-                <button id='btnLikeimage$this->id' class='btn btn-primary d-none' onclick='like($this->id,\"image\")'>Like</button>";
+                </form>";
             }
             else {
-                $btnLike = /*"<form class='d-inline' action='DOMAINLOGIC/likeImage.dom.php' method='post'>
+                $btnLike = "<form class='d-inline' action='DOMAINLOGIC/likeImage.dom.php' method='post'>
                 <input type='hidden' name='imageID' value='$this->id'>
                 <input class='btn btn-primary m-1' type='submit' value='Like'>
-                </form>";*/
-                "<button id='btnUnlikeimage$this->id' class='btn btn-danger d-none' onclick='unlike($this->id,\"image\")'>Unlike</button>
-                <button id='btnLikeimage$this->id' class='btn btn-primary' onclick='like($this->id,\"image\")'>Like</button>";
+                </form>";
             }
         }
-        $type = $this->type;
-        $id = $this->id;
-        $descr = $this->descr;
-        $date = $this->date;
-        $url = $this->url;
-        $nbVues = $this->nombreVues;
-        include __DIR__ . "/imagetemplate.php";
+        echo "<div class='d-block card text-white bg-dark w-95'" . $style . " >";
+        echo "<div class='card-header'>";
+        echo "<img alt='$this->descr' src='$this->url'>";
+        echo "</div><div class='card-body'>";
+        echo "<p class='card-text'>$this->descr</p>";
+        echo "<p class='card-text'><small class='text-muted'>Added on $this->date</small></p>";
+        echo "</div><div class='card-footer'>";
+        echo "<span class='badge badge-primary m-1'>$nbLikes likes</span>";
+        echo "<span class='badge badge-secondary m-1'>$this->nombreVues views</span>";
+        echo $btnLike;
+        echo $btnDelete;
+        echo "</div></div>";
     }
     
     public function display_comments() {
+        $compteur = 1;
         $TDG = CommentTDG::get_instance();
         $posts = $TDG->get_by_elemID($this->id, 'image');
         $res = false;
   
-        foreach($posts as $post) {
+        for ($i = count($posts) - 1; $i >= 0; $i--) {
             $res = true;
             $comment = new Comment();
-            $comment->load_comment($post['id']);
-            $comment->display();
+            $comment->load_comment($posts[$i]['id']);
+            $comment->display($compteur);
+            $compteur += 1;
         }
     }
 
@@ -154,9 +144,6 @@ class Image{
         if (!$this->load_image($id)) {
             return false;
         }
-        if (empty($userID)) {
-            return false;
-        }
         $TDG = LikeTDG::get_instance();
         $resp = $TDG->like_elem($id,"image", $userID);
         $TDG = null;
@@ -167,9 +154,6 @@ class Image{
         if (!$this->load_image($id)) {
             return false;
         }
-        if (empty($userID)) {
-            return false;
-        }
         $TDG = LikeTDG::get_instance();
         $resp = $TDG->unlike_elem($id,"image", $userID);
         $TDG = null;
@@ -178,20 +162,14 @@ class Image{
 
     //STATIC FUNCTIONS
 
-    public static function add_image($albumID, $url, $descr, $type) {
-        if (empty($albumID) || empty($url) || empty($type)) {
-            return false;
-        }
+    public static function add_image($albumID, $url, $descr) {
         $TDG = ImageTDG::get_instance();
-        $resp = $TDG->add_image($albumID, $url, $descr, $type);
+        $resp = $TDG->add_image($albumID, $url, $descr);
         $TDG = null;
         return $resp;
     }
 
     public static function delete_image($id){
-        if (empty($id)) {
-            return false;
-        }
         $TDG = ImageTDG::get_instance();
         $resp = $TDG->delete_image($id);
         if ($resp) {
@@ -204,10 +182,8 @@ class Image{
     }
 
     public static function delete_image_by_albumID($albumID){
-        if (empty($albumID)) {
-            return false;
-        }
-        $res = Image::get_by_albumID($albumID);
+        $TDG = ImageTDG::get_instance();
+        $res = $TDG->get_by_albumID($albumID);
         if (!$res) {
             return false;
         }
@@ -225,14 +201,22 @@ class Image{
         return $TDG->get_by_albumID($albumID);
     }
 
-    public static function create_list_by_albumID($albumID){
-        $res = Image::get_by_albumID($albumID);
+    public static function create_image_list($res){        
         $lst = array();
         foreach ($res as $row) {
             $img = new Image();
-            $img->load_image($res["id"]);
+            $img->load_image($row["id"]);
             array_push($lst,$img);
         }
+
+        return $lst;
+    }
+
+    public static function search_descr($descr){
+        $TDG = ImageTDG::get_instance();
+        $res = $TDG->search_descr($descr);
+        $TDG = null;
+        return $res;
     }
 }
 ?>

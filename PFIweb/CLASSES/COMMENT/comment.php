@@ -67,7 +67,7 @@ class Comment{
         
         return true;
     }
-    public function display() {
+    public function display($noComment) {
         $author = new User();
         $author->load_user_id($this->authorID);
         $TDG = CommentTDG::get_instance();
@@ -79,60 +79,54 @@ class Comment{
         
         if (isset($_SESSION["userID"])) {
             if ($TDG->is_comment_liked_by($this->id, $_SESSION["userID"])) {
-                $btnLike = /*"
-                <form class='d-inline' action='DOMAINLOGIC/unlikeComment.dom.php' method='post'>
+                $btnLike = "<form class='d-inline' action='DOMAINLOGIC/unlikeComment.dom.php' method='post'>
                 <input type='hidden'  id='commentID' name='commentID' value='$this->id'>
-                <input class='btn btn-danger m-1' type='submit' value='Unlike'></form>
-                "<button id='btnUnlike$this->id' class='btn btn-danger'>Unlike</button>
-                <span id='script$this->id'></span>
-                <script>
-                    $(document).ready(function() {
-                        $('#btnUnlike$this->id').click(function() {
-                        $('#script$this->id').load('DOMAINLOGIC/unlikeComment.dom.php'),
-                            {commentID: '$this->id'},
-                            function(){
-                                alert('IS THIS THE LIONEL YOU ARE LOOKING FOR?')};
-                            });
-                        });
-                    });
-                </script>";*/
-                "<button id='btnUnlikecomment$this->id' class='btn btn-danger' onclick='unlike($this->id,\"comment\")'>Unlike</button>
-                <button id='btnLikecomment$this->id' class='btn btn-primary d-none' onclick='like($this->id,\"comment\")'>Like</button>";
+                <input class='btn btn-danger m-1' type='submit' value='Unlike'></form>";
             }
             else {
-                $btnLike = 
-                /*"<form class='d-inline' action='DOMAINLOGIC/likeComment.dom.php' method='post'>
+                $btnLike = "<form class='d-inline' action='DOMAINLOGIC/likeComment.dom.php' method='post'>
                 <input type='hidden' id='commentID' name='commentID' value='$this->id'>
-                <input class='btn btn-primary m-1' type='submit' value='Like'></form>";*/
-                "<button id='btnUnlikecomment$this->id' class='btn btn-danger d-none' onclick='unlike($this->id,\"comment\")'>Unlike</button>
-                <button id='btnLikecomment$this->id' class='btn btn-primary' onclick='like($this->id,\"comment\")'>Like</button>";
+                <input class='btn btn-primary m-1' type='submit' value='Like'></form>";
             }
             if ( $_SESSION["userID"] == $this->authorID) {
                 $btnsOwner = "<form class='d-inline' action='DOMAINLOGIC/deleteComment.dom.php' method='post'>
-                    <input type='hidden' id='commentID' name='commentID' value='$this->id'>
-                    <button class='btn btn-danger'>Delete</button></form>
-                    <button id='btnEdit' class='btn btn-warning' onclick='showEdit($this->id)'>Edit</button>";
-                $editbox = "<div class='card-footer d-none' id='editBox$this->id'>
-                    <form action='DOMAINLOGIC/editComment.dom.php' method='post'>
-                    <input type='hidden' id='commentID' name='commentID' value='$this->id'>
-                    <textarea class='form-control' name='content' id='content' rows='7' required>$this->content</textarea><br>
-                    <button class='btn btn-success' type='submit'>Save</button></form></div>";
+                <input type='hidden' id='commentID' name='commentID' value='$this->id'>
+                <button class='btn btn-danger'>Delete</button></form>
+                <button id='btnEdit' class='btn btn-warning' onclick='show_edit()'>Edit</button>";
+                $editbox = "<div class='card-footer' style='display:none;' id='editBox'>
+                <form action='DOMAINLOGIC/editComment.dom.php' method='post'>
+                <input type='hidden' id='commentID' name='commentID' value='$this->id'>
+                <textarea class='form-control' name='content' id='content' rows='7' required>$this->content</textarea><br>
+                <button class='btn btn-success' type='submit'>Save</button></form></div>";
+                $script = "<script>
+                function show_edit() {
+                    var x = document.getElementById('editBox');
+                    if (x.style.display === 'none') {
+                      x.style.display = 'block';
+                    } else {
+                      x.style.display = 'none';
+                    }
+                }; </script>";
             }
         }
-        $id = $this->id;
-        $pfp = $author->get_pfp();
-        $authorID = $this->authorID;
-        $username = $author->get_username();
-        $date = $this->date;
-        $content = $this->content;
-        include __DIR__ . "/commenttemplate.php";
+        echo $script;
+        echo "<div class='card' id='c" . $noComment . "' style='text-align:left;margin-top:30px;display:none'>";
+        echo "<div class='card-header'>";
+        echo    "<img alt='pfp' src='" . $author->get_pfp() . "' height='50px' width='50px'>";
+        echo    "<span style='margin:0 1vw'>" . $author->get_username() . "</span>";
+        echo    "<small class='text-muted'>" . $this->date . "</small></div>";
+        echo "<div class = 'card-body'>";
+        echo "<p class='card-text'>". $this->content . "</p></div>";
+        echo "<div class='card-footer'>";
+        echo "<span class='badge badge-primary m-1'>$nbLikes likes</span>";
+        echo $btnLike;
+        echo $btnsOwner;
+        echo "</div>";
+        echo $editbox . "</div>";
     }
 
     public function update_content($id, $content)
     {
-        if (empty($content)) {
-            return false;
-        }
         if (!$this->load_comment($id)) {
             return false;
         }
@@ -145,12 +139,10 @@ class Comment{
         return $resp;
     }
 
+    
+
     public function like_comment($id, $userID) {
         if (!$this->load_comment($id)) {
-            return false;
-        }
-        if (empty($userID)) {
-            
             return false;
         }
         $TDG = LikeTDG::get_instance();
@@ -161,11 +153,6 @@ class Comment{
 
     public function unlike_comment($id, $userID) {
         if (!$this->load_comment($id)) {
-            echo "id vide";
-            return false;
-        }
-        if (empty($userID)) {
-            echo "user id vide";
             return false;
         }
         $TDG = LikeTDG::get_instance();
@@ -176,9 +163,6 @@ class Comment{
 
     //STATIC FUNCTIONS
     public static function add_comment($authorID, $elemID, $typeElem, $content) {
-        if (empty($authorID) || empty($elemID) || empty($typeElem) || empty($content)) {
-            return false;
-        }
         $TDG = CommentTDG::get_instance();
         $resp = $TDG->add_comment($authorID, $elemID, $typeElem, $content);
         $TDG = null;
@@ -186,9 +170,6 @@ class Comment{
     }
 
     public static function delete_comment($id){
-        if (empty($id)) {
-            return false;
-        }
         $TDG = CommentTDG::get_instance();
         $resp = $TDG->delete_comment($id);
         if ($resp) {
@@ -200,9 +181,6 @@ class Comment{
     }
 
     public static function delete_comment_by_elem($elemID, $typeElem){
-        if (empty($elemID) || empty($typeElem)) {
-            return false;
-        }
         $TDG = CommentTDG::get_instance();
         $res = $TDG->get_by_elemID($elemID, $typeElem);
         if (!$res) {

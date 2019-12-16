@@ -1,4 +1,6 @@
 <?php
+    include_once __DIR__ . "/../CLASSES/ALBUM/album.php";  
+    
     $album = new Album();
     $album->load_album($_GET["albumID"]);
 ?>
@@ -7,17 +9,15 @@
   <h1 class="mb-4" ><?php echo $album->get_title() ?> </h1>
     <div class="row justify-content-md-center">
         <div class="col-sm-8 mb-4">
-            <div id='medias'>
-                <?php 
-                    $album->display_images_preview();
-                ?>
-            </div>
-            <div id='comments'>
-                <?php
-                    $album->display_comments();
-                    include "addcommentalbumview.php";
-                ?>
-            </div>
+            <?php 
+                $album->display_images_preview();
+            ?>
+            <br>
+            <?php
+                $album->display_comments();
+                include "addcommentalbumview.php";
+            ?>
+            <button id="comments-load-btn" type="button" class="btn btn-primary" name="button">More comments!</button>
         </div>
         <div class="col-sm-3 mb-4">
             <?php 

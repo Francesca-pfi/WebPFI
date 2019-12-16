@@ -106,20 +106,16 @@ class Album{
                 <input class='btn btn-danger m-1' type='submit' value='Delete'>
                 </form>";
             if ($TDG->is_album_liked_by($this->id, $_SESSION["userID"])){
-                $btnLike = /*"<form class='d-inline' action='DOMAINLOGIC/unlikeAlbum.dom.php' method='post'>
+                $btnLike = "<form class='d-inline' action='DOMAINLOGIC/unlikeAlbum.dom.php' method='post'>
                 <input type='hidden' name='albumID' value='$this->id'>
                 <input class='btn btn-danger m-1' type='submit' value='Unlike'>
-                </form>";*/
-                "<button id='btnUnlikealbum$this->id' class='btn btn-danger' onclick='unlike($this->id,\"album\")'>Unlike</button>
-                <button id='btnLikealbum$this->id' class='btn btn-primary d-none' onclick='like($this->id,\"album\")'>Like</button>";
+                </form>";
             }
             else {
-                $btnLike = /*"<form class='d-inline' action='DOMAINLOGIC/likeAlbum.dom.php' method='post'>
+                $btnLike = "<form class='d-inline' action='DOMAINLOGIC/likeAlbum.dom.php' method='post'>
                 <input type='hidden' name='albumID' value='$this->id'>
                 <input class='btn btn-primary m-1' type='submit' value='Like'>
-                </form>";*/
-                "<button id='btnUnlikealbum$this->id' class='btn btn-danger d-none' onclick='unlike($this->id,\"album\")'>Unlike</button>
-                <button id='btnLikealbum$this->id' class='btn btn-primary' onclick='like($this->id,\"album\")'>Like</button>";
+                </form>";
             }
         }
 
@@ -132,7 +128,7 @@ class Album{
         echo    "</div>";
         echo    "<div class='card-footer text-left'>";
         echo        "<span style='margin-right:1vw;'>Author : " . $username . "</span>";
-        echo        "<span class='badge badge-primary m-1'><span id='nbLikesalbum$this->id'>$nbLikes</span> likes</span>";
+        echo        "<span class='badge badge-primary m-1'>$nbLikes likes</span>";
         echo        "<span class='badge badge-secondary m-1'>$this->nombreVues views</span>";              
         echo        $btnLike;
         echo        $btnDelete;
@@ -140,7 +136,7 @@ class Album{
         echo "</div>";       
     }
 
-    public function display_images_preview() {          
+    public function display_images_preview() {       
         $TDG = AlbumTDG::get_instance();
         $TDG->add_view($this->id);
 
@@ -153,17 +149,19 @@ class Album{
         }
     }
     public function display_comments() {
-        
+        $compteur = 1;
         $TDG = CommentTDG::get_instance();
         $posts = $TDG->get_by_elemID($this->id, 'album');
         $res = false;
   
-        foreach($posts as $post) {
+        for ($i = count($posts) - 1; $i >= 0; $i--) {
             $res = true;
             $comment = new Comment();
-            $comment->load_comment($post['id']);
-            $comment->display();
+            $comment->load_comment($posts[$i]['id']);
+            $comment->display($compteur);
+            $compteur += 1;
         }
+        
     }
 
     //STATIC FUNCTIONS
@@ -194,9 +192,6 @@ class Album{
     }
 
     public static function delete_album($id){
-        if (empty($id)){
-            return false;
-        }
         $TDG = AlbumTDG::get_instance();
         $resp = $TDG->delete_album($id);
         if ($resp) {
@@ -210,33 +205,21 @@ class Album{
     }
 
     public static function like_album($albumID,$userID){
-        if (empty($albumID) || empty($userID)){
-            return false;
-        }
-        $TDG = LikeTDG::get_instance();
-        $resp = $TDG->like_elem($albumID,"album",$userID);
+        $TDG = AlbumTDG::get_instance();
+        $TDG->like_album($albumID,$userID);
         $TDG = null;
-        return $resp;
     }
 
     public static function add_album($title,$descr,$userID){
-        if (empty($title) || empty($userID)){
-            return false;
-        }
         $TDG = AlbumTDG::get_instance();
-        $resp = $TDG->add_album($title,$descr,$userID,date("Y/m/d"));
+        $TDG->add_album($title,$descr,$userID,date("Y/m/d"));
         $TDG = null;
-        return $resp;
     }
 
     public static function unlike_album($albumID,$userID){
-        if (empty($albumID) || empty($userID)){
-            return false;
-        }
-        $TDG = LikeTDG::get_instance();
-        $resp = $TDG->unlike_elem($albumID,"album",$userID);
+        $TDG = AlbumTDG::get_instance();
+        $TDG->unlike_album($albumID,$userID);
         $TDG = null;
-        return $resp;
     }
 
     public static function search_title($title){
