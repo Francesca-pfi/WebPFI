@@ -222,7 +222,12 @@ class Image{
         $TDG = null;
         return true;
     }
-
+    
+    public static function get_by_albumID($albumID){
+        $TDG = ImageTDG::get_instance();
+        return $TDG->get_by_albumID($albumID);
+    }
+    
     public static function create_list_by_albumID($albumID){
         $res = Image::get_by_albumID($albumID);
         $lst = array();
