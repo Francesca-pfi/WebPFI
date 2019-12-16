@@ -9,6 +9,7 @@ class Image{
     private $url;
     private $descr;
     private $nombreVues;
+    private $type;
     private $date;
 /*
     public function __construct($idP,$albumID,$urlP,$nombreLikeP,$dateP){
@@ -41,6 +42,10 @@ class Image{
         return $this->nombreVues;
     }
 
+    public function get_type(){
+        return $this->type;
+    }
+
     public function get_date(){
         return $this->date;
     }
@@ -66,6 +71,7 @@ class Image{
         $this->url = $res['url'];;
         $this->descr = $res['descr'];;
         $this->nombreVues = $res['nombreVues'];;
+        $this->type = $res['type'];
         $this->date = $res['date'];;
 
         $TDG = null;
@@ -74,7 +80,14 @@ class Image{
 
     //display
     public function display_preview(){
+        if ($this->type == "image") {
         echo "<a href=image.php?imageID=$this->id><img alt='$this->descr' src='$this->url' height='150px' class='m-1'></a>";
+        } else if ($this->type == "video") {
+             echo "<a href=image.php?imageID=$this->id><video height='150' class='m-1 align-middle' autoplay loop>
+                    <source src='$this->url'>
+                    ?
+                    </video></a>";
+        }
     }
     public function display(){
         $style = "style='margin-bottom:30px;border:0.5vh solid rgba(57,184,188,1)'";
@@ -89,18 +102,24 @@ class Image{
                 <input class='btn btn-danger m-1' type='submit' value='Delete'>
               </form>";
             if ($TDG->is_image_liked_by($this->id, $_SESSION["userID"])) {
-                $btnLike = "<form class='d-inline' action='DOMAINLOGIC/unlikeImage.dom.php' method='post'>
+                $btnLike = /*"<form class='d-inline' action='DOMAINLOGIC/unlikeImage.dom.php' method='post'>
                 <input type='hidden' name='imageID' value='$this->id'>
                 <input class='btn btn-danger m-1' type='submit' value='Unlike'>
-                </form>";
+                </form>";*/
+                "<button id='btnUnlikeimage$this->id' class='btn btn-danger' onclick='unlike($this->id,\"image\")'>Unlike</button>
+                <button id='btnLikeimage$this->id' class='btn btn-primary d-none' onclick='like($this->id,\"image\")'>Like</button>";
             }
             else {
-                $btnLike = "<form class='d-inline' action='DOMAINLOGIC/likeImage.dom.php' method='post'>
+                $btnLike = /*"<form class='d-inline' action='DOMAINLOGIC/likeImage.dom.php' method='post'>
                 <input type='hidden' name='imageID' value='$this->id'>
                 <input class='btn btn-primary m-1' type='submit' value='Like'>
-                </form>";
+                </form>";*/
+                "<button id='btnUnlikeimage$this->id' class='btn btn-danger d-none' onclick='unlike($this->id,\"image\")'>Unlike</button>
+                <button id='btnLikeimage$this->id' class='btn btn-primary' onclick='like($this->id,\"image\")'>Like</button>";
             }
         }
+        $type = $this->type;
+        $id = $this->id;
         $descr = $this->descr;
         $date = $this->date;
         $url = $this->url;
@@ -159,12 +178,12 @@ class Image{
 
     //STATIC FUNCTIONS
 
-    public static function add_image($albumID, $url, $descr) {
-        if (empty($albumID) || empty($url)) {
+    public static function add_image($albumID, $url, $descr, $type) {
+        if (empty($albumID) || empty($url) || empty($type)) {
             return false;
         }
         $TDG = ImageTDG::get_instance();
-        $resp = $TDG->add_image($albumID, $url, $descr);
+        $resp = $TDG->add_image($albumID, $url, $descr, $type);
         $TDG = null;
         return $resp;
     }

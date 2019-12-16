@@ -13,12 +13,20 @@ if(!validate_session()){
 
 if(!empty($_FILES["file"]) && !empty($_POST["albumID"]) && isset($_POST["descr"])){
     $file = $_FILES["file"];
+    $type;
 
     $target_dir = "MEDIAS/album_medias/";
     $media_file_type = pathinfo($file['name'] ,PATHINFO_EXTENSION);
     $img_extensions_arr = array("jpg","jpeg","png","gif");
+    $vid_extensions_arr = array("webm", "avi", "wmv", "rm", "rmvb", "mp4", "mpeg");
 
-    if(!in_array($media_file_type, $img_extensions_arr)){
+    if(in_array($media_file_type, $img_extensions_arr)){
+        $type = "image";
+    }
+    else if(in_array($media_file_type, $vid_extensions_arr)){
+        $type = "video";
+    }
+    else{
         header("Location: ../error.php?ErrorMSG=Invalid file type");
         die();
     }
@@ -31,8 +39,8 @@ if(!empty($_FILES["file"]) && !empty($_POST["albumID"]) && isset($_POST["descr"]
 
     $descr = Validator::sanitize($_POST["descr"]);
 
-    if (!Image::add_image($_POST["albumID"], $url, $descr)) {
-        header("Location: ../error.php?ErrorMSG=Coudld not upload file");
+    if (!Image::add_image($_POST["albumID"], $url, $descr, $type)) {
+        //header("Location: ../error.php?ErrorMSG=Could not upload file");
         die();
     }
 }

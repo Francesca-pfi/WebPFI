@@ -5,20 +5,14 @@
     session_start();
 
     if(!validate_session()){
-        header("Location: ../error.php?ErrorMSG=Not logged in");
+        echo false;
         die();
     }
 
-    $imageID = $_POST["imageID"];
+    $imageID = $_POST["id"];
     $userID = $_SESSION["userID"];
 
     $image = new Image();
 
-    if (!$image->unlike_image($imageID,$userID)){
-        header("Location: ../error.php?ErrorMSG=Could not unlike image");
-        die();
-    }
-
-    header("Location: ../image.php?imageID=" . $imageID);
-    die();
+    echo $image->unlike_image($imageID,$userID);
 ?>

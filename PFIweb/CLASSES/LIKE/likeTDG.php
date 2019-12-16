@@ -126,6 +126,7 @@ class LikeTDG extends DBAO{
 
         catch(PDOException $e)
         {
+            $e->getMessage();
             $resp =  false;
         }
         //fermeture de connection PDO
@@ -147,6 +148,7 @@ class LikeTDG extends DBAO{
 
         catch(PDOException $e)
         {
+            $e->getMessage();
             $resp =  false;
         }
         //fermeture de connection PDO

@@ -24,7 +24,7 @@ class ImageTDG extends DBAO{
         try{
             $conn = $this->connect();
             $tableName = $this->tableName;
-            $query = "SELECT id, albumID, url, descr, nombreVues, date FROM $tableName WHERE id=:id";
+            $query = "SELECT id, albumID, url, descr, nombreVues, type, date FROM $tableName WHERE id=:id";
             $stmt = $conn->prepare($query);
             $stmt->bindParam(':id', $id);
             $stmt->execute();
@@ -44,7 +44,7 @@ class ImageTDG extends DBAO{
         try{
             $conn = $this->connect();
             $tableName = $this->tableName;
-            $query = "SELECT id, url, descr, nombreVues, date FROM $tableName WHERE albumID=:id";
+            $query = "SELECT id, url, descr, nombreVues, type, date FROM $tableName WHERE albumID=:id";
             $stmt = $conn->prepare($query);
             $stmt->bindParam(':id', $albumID);
             $stmt->execute();
@@ -66,7 +66,7 @@ class ImageTDG extends DBAO{
         try{
             $conn = $this->connect();
             $tableName = $this->tableName;
-            $query = "SELECT id, albumID, url, descr, nombreVues, date FROM $tableName";
+            $query = "SELECT id, albumID, url, descr, nombreVues, type, date FROM $tableName";
             $stmt = $conn->prepare($query);
             $stmt->execute();
             $stmt->setFetchMode(PDO::FETCH_ASSOC);
@@ -82,17 +82,18 @@ class ImageTDG extends DBAO{
         return $result;
     }
 
-    public function add_image($albumID, $url, $descr){
+    public function add_image($albumID, $url, $descr, $type){
         $descr = validator::sanitize($descr);
 
         try{
             $conn = $this->connect();
             $tableName = $this->tableName;
-            $query = "INSERT INTO $tableName (albumID, url, descr, nombreVues, date) VALUES (:albumID, :url, :descr, 0, curdate())";
+            $query = "INSERT INTO $tableName (albumID, url, descr, nombreVues, type, date) VALUES (:albumID, :url, :descr, 0, :type, curdate())";
             $stmt = $conn->prepare($query);
             $stmt->bindParam(':albumID', $albumID);
             $stmt->bindParam(':url', $url);
             $stmt->bindParam(':descr', $descr);
+            $stmt->bindParam(':type', $type);
             $stmt->execute();
             $resp =  true;
         }
@@ -181,7 +182,6 @@ class ImageTDG extends DBAO{
 
         catch(PDOException $e)
         {
-            echo "Error: " . $e->getMessage();
             return false;
         }
         //fermeture de connection PDO

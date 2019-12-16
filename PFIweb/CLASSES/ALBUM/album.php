@@ -106,16 +106,20 @@ class Album{
                 <input class='btn btn-danger m-1' type='submit' value='Delete'>
                 </form>";
             if ($TDG->is_album_liked_by($this->id, $_SESSION["userID"])){
-                $btnLike = "<form class='d-inline' action='DOMAINLOGIC/unlikeAlbum.dom.php' method='post'>
+                $btnLike = /*"<form class='d-inline' action='DOMAINLOGIC/unlikeAlbum.dom.php' method='post'>
                 <input type='hidden' name='albumID' value='$this->id'>
                 <input class='btn btn-danger m-1' type='submit' value='Unlike'>
-                </form>";
+                </form>";*/
+                "<button id='btnUnlikealbum$this->id' class='btn btn-danger' onclick='unlike($this->id,\"album\")'>Unlike</button>
+                <button id='btnLikealbum$this->id' class='btn btn-primary d-none' onclick='like($this->id,\"album\")'>Like</button>";
             }
             else {
-                $btnLike = "<form class='d-inline' action='DOMAINLOGIC/likeAlbum.dom.php' method='post'>
+                $btnLike = /*"<form class='d-inline' action='DOMAINLOGIC/likeAlbum.dom.php' method='post'>
                 <input type='hidden' name='albumID' value='$this->id'>
                 <input class='btn btn-primary m-1' type='submit' value='Like'>
-                </form>";
+                </form>";*/
+                "<button id='btnUnlikealbum$this->id' class='btn btn-danger d-none' onclick='unlike($this->id,\"album\")'>Unlike</button>
+                <button id='btnLikealbum$this->id' class='btn btn-primary' onclick='like($this->id,\"album\")'>Like</button>";
             }
         }
 
@@ -128,7 +132,7 @@ class Album{
         echo    "</div>";
         echo    "<div class='card-footer text-left'>";
         echo        "<span style='margin-right:1vw;'>Author : " . $username . "</span>";
-        echo        "<span class='badge badge-primary m-1'>$nbLikes likes</span>";
+        echo        "<span class='badge badge-primary m-1'><span id='nbLikesalbum$this->id'>$nbLikes</span> likes</span>";
         echo        "<span class='badge badge-secondary m-1'>$this->nombreVues views</span>";              
         echo        $btnLike;
         echo        $btnDelete;

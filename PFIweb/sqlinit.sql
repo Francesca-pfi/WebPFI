@@ -25,6 +25,7 @@ albumID INTEGER(10) NOT NULL,
 url varchar(100) NOT NULL,
 descr VARCHAR(250) NOT NULL,
 nombreVues INTEGER(10) NOT NULL,
+type varchar(20) NOT NULL,
 date date NOT NULL);
 
 CREATE TABLE IF NOT EXISTS comments

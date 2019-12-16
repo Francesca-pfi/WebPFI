@@ -7,6 +7,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="HTML/functions.js"></script>
         <?php include "bootstrap.html";?>
         <title> <?php echo $title ?> </title>
     </head>

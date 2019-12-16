@@ -7,14 +7,17 @@
   <h1 class="mb-4" ><?php echo $album->get_title() ?> </h1>
     <div class="row justify-content-md-center">
         <div class="col-sm-8 mb-4">
-            <?php 
-                $album->display_images_preview();
-            ?>
-            <br>
-            <?php
-                $album->display_comments();
-                include "addcommentalbumview.php";
-            ?>
+            <div id='medias'>
+                <?php 
+                    $album->display_images_preview();
+                ?>
+            </div>
+            <div id='comments'>
+                <?php
+                    $album->display_comments();
+                    include "addcommentalbumview.php";
+                ?>
+            </div>
         </div>
         <div class="col-sm-3 mb-4">
             <?php 

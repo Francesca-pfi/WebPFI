@@ -10,7 +10,6 @@
     else{
         $name="Anon";
     }
-
     $content = array();
 
     if(isset($_GET["id"]))
