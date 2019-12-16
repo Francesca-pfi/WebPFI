@@ -140,7 +140,7 @@ class Album{
         echo "</div>";       
     }
 
-    public function display_images_preview() {          
+    public function display_images_preview() {       
         $TDG = AlbumTDG::get_instance();
         $TDG->add_view($this->id);
 
@@ -153,17 +153,19 @@ class Album{
         }
     }
     public function display_comments() {
-        
+        $compteur = 1;
         $TDG = CommentTDG::get_instance();
         $posts = $TDG->get_by_elemID($this->id, 'album');
         $res = false;
   
-        foreach($posts as $post) {
+        for ($i = count($posts) - 1; $i >= 0; $i--) {
             $res = true;
             $comment = new Comment();
-            $comment->load_comment($post['id']);
-            $comment->display();
+            $comment->load_comment($posts[$i]['id']);
+            $comment->display($compteur);
+            $compteur += 1;
         }
+        
     }
 
     //STATIC FUNCTIONS

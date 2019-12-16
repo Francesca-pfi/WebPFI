@@ -1,0 +1,61 @@
+body{
+    background-color: rgba(25,25,25,1);
+}
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+#bandeColore{
+    height:1vh;
+    width:400vw;
+    position: relative;
+    background-image: linear-gradient(to right, rgb(211, 136, 24) , purple,darkred,purple,rgb(211, 136, 24),purple,darkred,purple,rgb(211, 136, 24));
+    animation-name: example;
+    animation-duration: 8s;
+    animation-iteration-count: infinite;
+    margin-bottom: 1vh;
+}
+
+@keyframes example {
+    0%   {right:0vw}
+    5%   {right:10vw}
+    10%  {right:20vw}
+    15%   {right:30vw}
+    20%  {right:40vw}
+    25%   {right:50vw}
+    30%  {right:60vw}
+    35%   {right:70vw}
+    40%  {right:80vw}
+    45%   {right:90vw}
+    50%  {right:100vw}
+    55%   {right:110vw}
+    60%  {right:120vw}
+    65%   {right:130vw}
+    70%  {right:140vw}
+    75%   {right:150vw}
+    80%  {right:160vw}
+    85%   {right:170vw}
+    90%  {right:180vw}
+    95%   {right:190vw}
+    100% {right:200vw}
+}
+#headerTop{
+    background-image: url("../../MEDIAS/Images/bronze-strips.png");
+    background-position: center;
+    background-size:100%;
+    color:blanchedalmond;
+    font-weight: bold;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    margin-bottom:0;
+    height:20vh;
+}
+#headerNav{
+    background-color: rgba(25,25,25,1);
+    border-top:0.3vh solid rgb(211, 136, 24);  
+}
+#headerNav a{
+    color:blanchedalmond;
+}
+.blanchedalmond{
+    color:blanchedalmond;
+}

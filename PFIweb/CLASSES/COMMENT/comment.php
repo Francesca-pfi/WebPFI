@@ -67,7 +67,7 @@ class Comment{
         
         return true;
     }
-    public function display() {
+    public function display($noComment) {
         $author = new User();
         $author->load_user_id($this->authorID);
         $TDG = CommentTDG::get_instance();
@@ -79,29 +79,14 @@ class Comment{
         
         if (isset($_SESSION["userID"])) {
             if ($TDG->is_comment_liked_by($this->id, $_SESSION["userID"])) {
-                $btnLike = /*"
-                <form class='d-inline' action='DOMAINLOGIC/unlikeComment.dom.php' method='post'>
+                /*$btnLike = "<form class='d-inline' action='DOMAINLOGIC/unlikeComment.dom.php' method='post'>
                 <input type='hidden'  id='commentID' name='commentID' value='$this->id'>
-                <input class='btn btn-danger m-1' type='submit' value='Unlike'></form>
-                "<button id='btnUnlike$this->id' class='btn btn-danger'>Unlike</button>
-                <span id='script$this->id'></span>
-                <script>
-                    $(document).ready(function() {
-                        $('#btnUnlike$this->id').click(function() {
-                        $('#script$this->id').load('DOMAINLOGIC/unlikeComment.dom.php'),
-                            {commentID: '$this->id'},
-                            function(){
-                                alert('IS THIS THE LIONEL YOU ARE LOOKING FOR?')};
-                            });
-                        });
-                    });
-                </script>";*/
+                <input class='btn btn-danger m-1' type='submit' value='Unlike'></form>";*/
                 "<button id='btnUnlikecomment$this->id' class='btn btn-danger' onclick='unlike($this->id,\"comment\")'>Unlike</button>
                 <button id='btnLikecomment$this->id' class='btn btn-primary d-none' onclick='like($this->id,\"comment\")'>Like</button>";
             }
             else {
-                $btnLike = 
-                /*"<form class='d-inline' action='DOMAINLOGIC/likeComment.dom.php' method='post'>
+                $btnLike = /*"<form class='d-inline' action='DOMAINLOGIC/likeComment.dom.php' method='post'>
                 <input type='hidden' id='commentID' name='commentID' value='$this->id'>
                 <input class='btn btn-primary m-1' type='submit' value='Like'></form>";*/
                 "<button id='btnUnlikecomment$this->id' class='btn btn-danger d-none' onclick='unlike($this->id,\"comment\")'>Unlike</button>
@@ -161,11 +146,9 @@ class Comment{
 
     public function unlike_comment($id, $userID) {
         if (!$this->load_comment($id)) {
-            echo "id vide";
             return false;
         }
-        if (empty($userID)) {
-            echo "user id vide";
+        if (empty($userID)) {           
             return false;
         }
         $TDG = LikeTDG::get_instance();
