@@ -10,7 +10,7 @@
             $albums = Album::search_title($_POST['search']);
             $albums = Album::create_album_list($albums);       
             if(count($albums) > 0){
-                echo "<h3 class='my-4'>Albums</h3>";
+                echo "<h3 class='my-4 blanchedalmond' id='albums'>Albums</h3>";
             }
             foreach($albums as $album){
                 if(validate_session()){
@@ -25,7 +25,7 @@
             $users = User::search_name($_POST['search']);
             $users = User::create_users_list($users);        
             if(count($users) > 0){
-                echo "<h3 class='my-4'>Users</h3>";
+                echo "<h3 class='my-4 blanchedalmond'>Users</h3>";
             }
             foreach($users as $user){
                 $user->display_user();
@@ -35,7 +35,7 @@
             $images = Image::search_descr($_POST['search']);
             $images = Image::create_image_list($images);
             if(count($images) > 0){
-                echo "<h3 class='my-4'>Images</h3>";
+                echo "<h3 class='my-4 blanchedalmond'>Images</h3>";
             }
             foreach($images as $image){       
                 $image->display_preview();

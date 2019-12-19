@@ -1,4 +1,4 @@
-<h3 class="my-4">Albums</h3>
+<h3 class="my-4 blanchedalmond" id="albums">Albums</h3>
 <?php
     include_once __DIR__ . "/../CLASSES/ALBUM/album.php";
 

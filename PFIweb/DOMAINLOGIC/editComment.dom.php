@@ -11,7 +11,7 @@
     }
 
     $comment = new Comment();
-    $content = Validator::sanitize($_POST["content"]);
+    $content = Validator::sanitize_textBox($_POST["content"]);
 
     if (!$comment->update_content($_POST["commentID"],$content)){
         header("Location: ../error.php?ErrorMSG=Could not update comment");

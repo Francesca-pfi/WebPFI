@@ -46,7 +46,7 @@ class AlbumTDG extends DBAO{
         try{
             $conn = $this->connect();
             $tableName = $this->tableName;
-            $query = "SELECT id, title, descr, userID, nombreVues, date FROM $tableName where userID=:id";
+            $query = "SELECT id, title, descr, userID, nombreVues, date FROM $tableName where userID=:id order by id desc";
             $stmt = $conn->prepare($query);
             $stmt->bindParam(':id', $userID);
             $stmt->execute();
@@ -63,33 +63,11 @@ class AlbumTDG extends DBAO{
         return $result;
     }
 
-    public function get_number_of_likes($albumID) {
-        try{
-            $conn = $this->connect();
-            $tableName = $this->tableName;
-            $query = "select count(*) as likes from likes where elemID = :albumID and typeElem = 'album'";
-            $stmt = $conn->prepare($query);
-            $stmt->bindParam(':albumID', $albumID);
-            $stmt->execute();
-            $stmt->setFetchMode(PDO::FETCH_ASSOC);
-            $result = $stmt->fetch();
-        }
-
-        catch(PDOException $e)
-        {
-            echo "Error: " . $e->getMessage();
-            return 0;
-        }
-        //fermeture de connection PDO
-        $conn = null;
-        return $result["likes"];
-    }
-
     public function search_title($title){
         try{
             $conn = $this->connect();
             $tableName = $this->tableName;
-            $query = "SELECT id, title, descr, userID, nombreVues, date FROM $tableName WHERE title like :title";
+            $query = "SELECT id, title, descr, userID, nombreVues, date FROM $tableName WHERE title like :title order by id desc";
             $stmt = $conn->prepare($query);
             $param = "%" . $title . "%";
             $stmt->bindParam(':title', $param);
@@ -112,7 +90,7 @@ class AlbumTDG extends DBAO{
         try{
             $conn = $this->connect();
             $tableName = $this->tableName;
-            $query = "SELECT id, title, descr, userID, nombreVues, date FROM $tableName";
+            $query = "SELECT id, title, descr, userID, nombreVues, date FROM $tableName order by id desc";
             $stmt = $conn->prepare($query);
             $stmt->execute();
             $stmt->setFetchMode(PDO::FETCH_ASSOC);
@@ -148,33 +126,10 @@ class AlbumTDG extends DBAO{
         return $resp;
     }
 
-    public function is_album_liked_by($albumID, $userID) {
-        try{
-            $conn = $this->connect();
-            $tableName = $this->tableName;
-            $query = "select count(*) as count from likes where elemID = :albumID and typeElem = 'album' and userID = :userID";
-            $stmt = $conn->prepare($query);
-            $stmt->bindParam(':albumID', $albumID);
-            $stmt->bindParam(':userID', $userID);
-            $stmt->execute();
-            $stmt->setFetchMode(PDO::FETCH_ASSOC);
-            $result = $stmt->fetch();
-        }
-
-        catch(PDOException $e)
-        {
-            echo "Error: " . $e->getMessage();
-            return false;
-        }
-        //fermeture de connection PDO
-        $conn = null;
-        return $result["count"] > 0;
-    }
-
     public function add_album($title,$descr,$userID,$date){
         try{
             $title = validator::sanitize($title);
-            $descr = validator::sanitize($descr);
+            $descr = validator::sanitize_textBox($descr);
             $conn = $this->connect();
             $tableName = $this->tableName;
             $query = "INSERT INTO $tableName (title, descr, userID, nombreVues, date) VALUES (:title, :descr, :userID, 0, :date)";

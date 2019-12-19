@@ -11,7 +11,7 @@
 
     $elemID = $_POST["elemID"];
     $typeElem = $_POST["typeElem"];
-    $content = Validator::sanitize($_POST["content"]);
+    $content = Validator::sanitize_textBox($_POST["content"]);
     $userID = $_SESSION["userID"];
     
     if (!Comment::add_comment($userID, $elemID, $typeElem, $content)){

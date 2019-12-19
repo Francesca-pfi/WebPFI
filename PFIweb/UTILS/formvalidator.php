@@ -57,6 +57,13 @@
             return $input;
         }
 
+        public static function sanitize_textBox($input){
+            $input = str_replace("\n","<br />", $input);
+            $input = stripslashes($input);
+            $input = strip_tags($input, "<br>");
+            return $input;
+        }
+
         
     }
 

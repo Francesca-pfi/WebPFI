@@ -70,38 +70,35 @@ class Comment{
     public function display($noComment) {
         $author = new User();
         $author->load_user_id($this->authorID);
-        $TDG = CommentTDG::get_instance();
-        $nbLikes = $TDG->get_number_of_likes($this->id);
+        $TDG = LikeTDG::get_instance();
+        $nbLikes = $TDG->get_number_of_likes($this->id,"comment");
         $btnLike  = "Login to like comments";
         $btnsOwner = "";
         $editbox = "";
         $script = "";
+        $content_edit = strip_tags($this->content);
         
         if (isset($_SESSION["userID"])) {
-            if ($TDG->is_comment_liked_by($this->id, $_SESSION["userID"])) {
-                /*$btnLike = "<form class='d-inline' action='DOMAINLOGIC/unlikeComment.dom.php' method='post'>
-                <input type='hidden'  id='commentID' name='commentID' value='$this->id'>
-                <input class='btn btn-danger m-1' type='submit' value='Unlike'></form>";*/
-                "<button id='btnUnlikecomment$this->id' class='btn btn-danger' onclick='unlike($this->id,\"comment\")'>Unlike</button>
-                <button id='btnLikecomment$this->id' class='btn btn-primary d-none' onclick='like($this->id,\"comment\")'>Like</button>";
+            if ($TDG->is_elem_liked_by($this->id, "comment", $_SESSION["userID"])) {
+                $btnLike = 
+                "<button id='btnUnlikecomment$this->id' class='btn btn-outline-light' onclick='unlike($this->id,\"comment\")'>Unlike</button>
+                <button id='btnLikecomment$this->id' class='btn btn-outline-light d-none' onclick='like($this->id,\"comment\")'>Like</button>";
             }
             else {
-                $btnLike = /*"<form class='d-inline' action='DOMAINLOGIC/likeComment.dom.php' method='post'>
-                <input type='hidden' id='commentID' name='commentID' value='$this->id'>
-                <input class='btn btn-primary m-1' type='submit' value='Like'></form>";*/
-                "<button id='btnUnlikecomment$this->id' class='btn btn-danger d-none' onclick='unlike($this->id,\"comment\")'>Unlike</button>
-                <button id='btnLikecomment$this->id' class='btn btn-primary' onclick='like($this->id,\"comment\")'>Like</button>";
+                $btnLike = 
+                "<button id='btnUnlikecomment$this->id' class='btn btn-outline-light d-none' onclick='unlike($this->id,\"comment\")'>Unlike</button>
+                <button id='btnLikecomment$this->id' class='btn btn-outline-light' onclick='like($this->id,\"comment\")'>Like</button>";
             }
             if ( $_SESSION["userID"] == $this->authorID) {
                 $btnsOwner = "<form class='d-inline' action='DOMAINLOGIC/deleteComment.dom.php' method='post'>
                     <input type='hidden' id='commentID' name='commentID' value='$this->id'>
-                    <button class='btn btn-danger'>Delete</button></form>
-                    <button id='btnEdit' class='btn btn-warning' onclick='showEdit($this->id)'>Edit</button>";
-                $editbox = "<div class='card-footer d-none' id='editBox$this->id'>
+                    <button class='btn btn-outline-danger'>Delete</button></form>
+                    <button id='btnEdit' class='btn btn-outline-info' onclick='showEdit($this->id)'>Edit</button>";
+                $editbox = "<div class='card-footer commentFooter d-none' id='editBox$this->id'>
                     <form action='DOMAINLOGIC/editComment.dom.php' method='post'>
                     <input type='hidden' id='commentID' name='commentID' value='$this->id'>
-                    <textarea class='form-control' name='content' id='content' rows='7' required>$this->content</textarea><br>
-                    <button class='btn btn-success' type='submit'>Save</button></form></div>";
+                    <textarea name='content' id='content' rows='7' required>$content_edit</textarea><br>
+                    <button class='btn btn-outline-info' type='submit'>Save</button></form></div>";
             }
         }
         $id = $this->id;
@@ -163,7 +160,8 @@ class Comment{
             return false;
         }
         $TDG = CommentTDG::get_instance();
-        $resp = $TDG->add_comment($authorID, $elemID, $typeElem, $content);
+        $date = new DateTime("now", new DateTimeZone('America/New_York') );
+        $resp = $TDG->add_comment($authorID, $elemID, $typeElem, $content, $date->format('Y-m-d H:i:s'));
         $TDG = null;
         return $resp;
     }

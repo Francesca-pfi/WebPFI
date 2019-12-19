@@ -82,18 +82,19 @@ class ImageTDG extends DBAO{
         return $result;
     }
 
-    public function add_image($albumID, $url, $descr, $type){
-        $descr = validator::sanitize($descr);
+    public function add_image($albumID, $url, $descr, $type, $date){
+        $descr = validator::sanitize_textBox($descr);
 
         try{
             $conn = $this->connect();
             $tableName = $this->tableName;
-            $query = "INSERT INTO $tableName (albumID, url, descr, nombreVues, type, date) VALUES (:albumID, :url, :descr, 0, :type, curdate())";
+            $query = "INSERT INTO $tableName (albumID, url, descr, nombreVues, type, date) VALUES (:albumID, :url, :descr, 0, :type, :date)";
             $stmt = $conn->prepare($query);
             $stmt->bindParam(':albumID', $albumID);
             $stmt->bindParam(':url', $url);
             $stmt->bindParam(':descr', $descr);
             $stmt->bindParam(':type', $type);
+            $stmt->bindParam(':date', $date);
             $stmt->execute();
             $resp =  true;
         }
@@ -144,49 +145,6 @@ class ImageTDG extends DBAO{
         //fermeture de connection PDO
         $conn = null;
         return $resp;
-    }
-    public function get_number_of_likes($imageID) {
-        try{
-            $conn = $this->connect();
-            $tableName = $this->tableName;
-            $query = "select count(*) as likes from likes where elemID = :imageID and typeElem = 'image'";
-            $stmt = $conn->prepare($query);
-            $stmt->bindParam(':imageID', $imageID);
-            $stmt->execute();
-            $stmt->setFetchMode(PDO::FETCH_ASSOC);
-            $result = $stmt->fetch();
-        }
-
-        catch(PDOException $e)
-        {
-            echo "Error: " . $e->getMessage();
-            return 0;
-        }
-        //fermeture de connection PDO
-        $conn = null;
-        return $result["likes"];
-    }
-
-    public function is_image_liked_by($imageID, $userID) {
-        try{
-            $conn = $this->connect();
-            $tableName = $this->tableName;
-            $query = "select count(*) as count from likes where elemID = :imageID and typeElem = 'image' and userID = :userID";
-            $stmt = $conn->prepare($query);
-            $stmt->bindParam(':imageID', $imageID);
-            $stmt->bindParam(':userID', $userID);
-            $stmt->execute();
-            $stmt->setFetchMode(PDO::FETCH_ASSOC);
-            $result = $stmt->fetch();
-        }
-
-        catch(PDOException $e)
-        {
-            return false;
-        }
-        //fermeture de connection PDO
-        $conn = null;
-        return $result["count"] > 0;
     }
 
     public function add_view($imageID) {

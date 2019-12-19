@@ -42,7 +42,7 @@ class CommentTDG extends DBAO{
         try{
             $conn = $this->connect();
             $tableName = $this->tableName;
-            $query = "SELECT id, elemID, typeElem, content, date FROM $tableName WHERE idUser=:authorID";
+            $query = "SELECT id, elemID, typeElem, content, date FROM $tableName WHERE idUser=:authorID order by id desc";
             $stmt = $conn->prepare($query);
             $stmt->bindParam(':authorID', $authorID);
             $stmt->execute();
@@ -63,7 +63,7 @@ class CommentTDG extends DBAO{
         try{
             $conn = $this->connect();
             $tableName = $this->tableName;
-            $query = "SELECT id, idUser, content, date FROM $tableName WHERE elemID=:elemID and typeElem=:typeElem order by id";
+            $query = "SELECT id, idUser, content, date FROM $tableName WHERE elemID=:elemID and typeElem=:typeElem order by id desc";
             $stmt = $conn->prepare($query);
             $stmt->bindParam(':elemID', $elemID);
             $stmt->bindParam(':typeElem', $typeElem);
@@ -85,7 +85,7 @@ class CommentTDG extends DBAO{
         try{
             $conn = $this->connect();
             $tableName = $this->tableName;
-            $query = "SELECT id, idUser, elemID, typeElem, content, date FROM $tableName";
+            $query = "SELECT id, idUser, elemID, typeElem, content, date FROM $tableName order by id desc";
             $stmt = $conn->prepare($query);
             $stmt->execute();
             $stmt->setFetchMode(PDO::FETCH_ASSOC);
@@ -100,17 +100,18 @@ class CommentTDG extends DBAO{
         $conn = null;
         return $result;
     }
-    public function add_comment($authorID, $elemID, $typeElem, $content){
+    public function add_comment($authorID, $elemID, $typeElem, $content, $date){
         
         try{
             $conn = $this->connect();
             $tableName = $this->tableName;
-            $query = "INSERT INTO $tableName (idUser, elemID, typeElem, content, date) VALUES (:authorID, :elemID, :typeElem, :content, curdate())";
+            $query = "INSERT INTO $tableName (idUser, elemID, typeElem, content, date) VALUES (:authorID, :elemID, :typeElem, :content, :date)";
             $stmt = $conn->prepare($query);
             $stmt->bindParam(':authorID', $authorID);
             $stmt->bindParam(':elemID', $elemID);
             $stmt->bindParam(':typeElem', $typeElem);
             $stmt->bindParam(':content', $content);
+            $stmt->bindParam(':date', $date);
             $stmt->execute();
             $resp =  true;
         }
@@ -185,47 +186,6 @@ class CommentTDG extends DBAO{
         //fermeture de connection PDO
         $conn = null;
         return $resp;
-    }
-    public function get_number_of_likes($commentID) {
-        try{
-            $conn = $this->connect();
-            $tableName = $this->tableName;
-            $query = "select count(*) as likes from likes where elemID = :commentID and typeElem = 'comment'";
-            $stmt = $conn->prepare($query);
-            $stmt->bindParam(':commentID', $commentID);
-            $stmt->execute();
-            $stmt->setFetchMode(PDO::FETCH_ASSOC);
-            $result = $stmt->fetch();
-        }
-        catch(PDOException $e)
-        {
-            echo "Error: " . $e->getMessage();
-            return 0;
-        }
-        //fermeture de connection PDO
-        $conn = null;
-        return $result["likes"];
-    }
-    public function is_comment_liked_by($commentID, $userID) {
-        try{
-            $conn = $this->connect();
-            $tableName = $this->tableName;
-            $query = "select count(*) as count from likes where elemID = :commentID and typeElem = 'comment' and userID = :userID";
-            $stmt = $conn->prepare($query);
-            $stmt->bindParam(':commentID', $commentID);
-            $stmt->bindParam(':userID', $userID);
-            $stmt->execute();
-            $stmt->setFetchMode(PDO::FETCH_ASSOC);
-            $result = $stmt->fetch();
-        }
-        catch(PDOException $e)
-        {
-            echo "Error: " . $e->getMessage();
-            return false;
-        }
-        //fermeture de connection PDO
-        $conn = null;
-        return $result["count"] > 0;
     }
 }
 ?>

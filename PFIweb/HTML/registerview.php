@@ -1,4 +1,4 @@
-<div class="container" style="margin-top:30px">
+<div class="container" id="register">
     <div class="row">
         <div class="col-sm-4">
             <h2>REGISTER</h2>
@@ -31,7 +31,7 @@
                     <div class="valid-feedback">Valid.</div>
                     <div class="invalid-feedback">Please fill out this field.</div>
                 </div>
-                <button class="btn btn-success" type="submit">Login</button>
+                <button class="btn btn-outline-light" type="submit">Register</button>
             </form>
         </div>
     </div>

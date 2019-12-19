@@ -5,7 +5,7 @@
     $albums = Album::create_album_list($albums);
 ?>
 
-<h3 class="my-4">Albums</h3>
+<h3 class="my-4 blanchedalmond" id="albums">Albums</h3>
 <?php
     foreach($albums as $album){
         if(validate_session()){

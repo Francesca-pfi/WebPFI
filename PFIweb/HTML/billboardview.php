@@ -3,7 +3,7 @@
     $name = $_SESSION["userName"];
   }
   else{
-    $name="Anon";
+    $name = "";
   }
 ?>
 
