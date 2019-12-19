@@ -11,7 +11,7 @@
         <title> <?php echo $title ?> </title>
         <link rel="stylesheet" type="text/css" href="HTML/CSS/css.css">
         <script src="JS/util.js"></script>
-        <script src="HTML/functions.js"></script>
+        <script src="JS/functions.js"></script>
     </head>
     <body>
         <main>
