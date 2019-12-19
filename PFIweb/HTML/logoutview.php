@@ -1,3 +1,3 @@
 <div class='container'>
-    <h2>Successful logout!</h2>
+    <h2 class="blanchedalmond">Successful logout!</h2>
 </div>

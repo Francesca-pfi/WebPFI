@@ -10,16 +10,24 @@
         <?php include "bootstrap.html";?>
         <title> <?php echo $title ?> </title>
         <link rel="stylesheet" type="text/css" href="HTML/CSS/css.css">
-        <script> <?php include_once __DIR__ . "/../JS/util.js"; ?> </script>
+        <script src="JS/util.js"></script>
         <script src="HTML/functions.js"></script>
     </head>
     <body>
-        <?php include "navigationmodule.php";?>
-        <div id="bandeColore"></div>
-        <div class="container-fluid align-center text-center">
-              <?php  load_modules($content); ?>
-        </div>
+        <main>
+            <?php include "navigationmodule.php";?>
+            <div id="bandeColore"></div>
+            <div class="container-fluid align-center text-center">
+                <?php  load_modules($content); ?>
+            </div>
+        </main>       
         <footer>
+            <div>
+                Created by F. St-Jacques & A. Lévesque with help from J. Dusablon Senecal
+            </div>
+            <button class="btn btn-outline-light" id="btnTop" type="button">
+                Back to the top!
+            </button>
         </footer>
     </body>
 </html>

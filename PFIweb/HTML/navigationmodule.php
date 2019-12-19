@@ -26,29 +26,23 @@
     }
 ?>
 
-
-<div class="jumbotron text-center" id="headerTop">
-    <div class="container">
-        <h1>Not a Forum</h1>
-        <p>or maybe it is, who knows?</p>
-    </div>
+<div id="headerTop">      
+    <h1>Not a Forum</h1>
+    <p>or maybe it is, who knows?</p>      
 </div>
 
+<nav class="navbar navbar-expand-sm navbar-dark" id="headerNav">    
+    <ul class="navbar-nav mr-auto">
+        <?php
+            echo $navLinks;
+        ?>
+        <li class="nav-item">
+            <a class="nav-link" href="billboard.php">BILLBOARD</a>
+        </li>
+    </ul>
 
-<nav class="navbar navbar-expand-sm navbar-dark" id="headerNav">
-    <div class="container collapse navbar-collapse">
-        <ul class="navbar-nav mr-auto">
-            <?php
-                echo $navLinks;
-            ?>
-            <li class="nav-item">
-                <a class="nav-link" href="billboard.php">BILLBOARD</a>
-            </li>
-        </ul>
-
-        <form class="form-inline my-2 my-lg-0" action="billboard.php" method="post">
-            <input class="form-control mr-sm-2" type="text" placeholder="Search" name="search">
-            <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
-        </form>
-    </div>
+    <form class="form-inline my-2 my-lg-0" action="billboard.php" method="post">
+        <input class="form-control mr-sm-2" id="search" type="text" placeholder="Search" name="search">
+        <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
+    </form>    
 </nav>

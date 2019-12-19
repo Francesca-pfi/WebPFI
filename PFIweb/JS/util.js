@@ -4,7 +4,10 @@ $(document).ready(function(){
 
     for (var i = 0; i < 3; i++) {
         content = $('#comment' + commentCount)[0];
-        content.style.display = "block";
+        if(typeof content !== "undefined")
+        {
+            content.style.display = "block";
+        }       
         commentCount++;  
     }
     
@@ -15,4 +18,8 @@ $(document).ready(function(){
             commentCount++;  
         }                
     });
+
+    $("#btnTop").click(function(){
+        document.documentElement.scrollTop = 0;
+    });    
 });

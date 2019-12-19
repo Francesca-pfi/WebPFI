@@ -85,59 +85,36 @@ class Album{
     }
 
     public function display_album(){
-        $TDG = UserTDG::get_instance();
-        $res = $TDG->get_by_id($this->userID);
-        $username = $res["username"];
+        $author = new User();
+        $author->load_user_id($this->userID);   
+        $username = $author->get_username();
+        $pfp = $author->get_pfp();;
 
         $TDG = AlbumTDG::get_instance();
         $nbLikes = $TDG->get_number_of_likes($this->id);
 
         $btnLike  = "";
-        $btnDelete = "";
-
-        $style = "style='margin-bottom:30px;border:0.2vh solid rgba(57,184,188,1)'";
-        $styleA = "style='text-decoration:none;color:white;font-size:1.3em'";
-        $border = "style='border-top:0.2vh solid rgba(57,184,188,1);border-bottom:0.2vh solid rgba(57,184,188,1)'";
+        $btnDelete = "";       
 
         if (validate_session()) {
             if ($_SESSION["userID"] == $this->userID)
                 $btnDelete = "<form class='d-inline' action='DOMAINLOGIC/deleteAlbum.dom.php' method='post'>
                 <input type='hidden' name='albumID' value='$this->id'>
-                <input class='btn btn-danger m-1' type='submit' value='Delete'>
+                <input class='btn btn-outline-danger m-1' type='submit' value='Delete'>
                 </form>";
             if ($TDG->is_album_liked_by($this->id, $_SESSION["userID"])){
-                $btnLike = /*"<form class='d-inline' action='DOMAINLOGIC/unlikeAlbum.dom.php' method='post'>
-                <input type='hidden' name='albumID' value='$this->id'>
-                <input class='btn btn-danger m-1' type='submit' value='Unlike'>
-                </form>";*/
-                "<button id='btnUnlikealbum$this->id' class='btn btn-danger' onclick='unlike($this->id,\"album\")'>Unlike</button>
-                <button id='btnLikealbum$this->id' class='btn btn-primary d-none' onclick='like($this->id,\"album\")'>Like</button>";
+                $btnLike = 
+                "<button id='btnUnlikealbum$this->id' class='btn btn-outline-light' onclick='unlike($this->id,\"album\")'>Unlike</button>
+                <button id='btnLikealbum$this->id' class='btn btn-outline-light d-none' onclick='like($this->id,\"album\")'>Like</button>";
             }
             else {
-                $btnLike = /*"<form class='d-inline' action='DOMAINLOGIC/likeAlbum.dom.php' method='post'>
-                <input type='hidden' name='albumID' value='$this->id'>
-                <input class='btn btn-primary m-1' type='submit' value='Like'>
-                </form>";*/
-                "<button id='btnUnlikealbum$this->id' class='btn btn-danger d-none' onclick='unlike($this->id,\"album\")'>Unlike</button>
-                <button id='btnLikealbum$this->id' class='btn btn-primary' onclick='like($this->id,\"album\")'>Like</button>";
+                $btnLike = 
+                "<button id='btnUnlikealbum$this->id' class='btn btn-outline-light d-none' onclick='unlike($this->id,\"album\")'>Unlike</button>
+                <button id='btnLikealbum$this->id' class='btn btn-outline-light' onclick='like($this->id,\"album\")'>Like</button>";
             }
         }
 
-        echo "<div class='card text-white bg-dark'" . $style . " >";
-        echo    "<div class='card-header'>";
-        echo        "<a " . $styleA . "href=\"./album.php?albumID=" . $this->id . "\">" . $this->title . "</a>";               
-        echo    "</div>";        
-        echo    "<div class='card-body' " . $border . ">";     
-        echo        "<div>". $this->descr ."</div>";        
-        echo    "</div>";
-        echo    "<div class='card-footer text-left'>";
-        echo        "<span style='margin-right:1vw;'>Author : " . $username . "</span>";
-        echo        "<span class='badge badge-primary m-1'><span id='nbLikesalbum$this->id'>$nbLikes</span> likes</span>";
-        echo        "<span class='badge badge-secondary m-1'>$this->nombreVues views</span>";              
-        echo        $btnLike;
-        echo        $btnDelete;
-        echo    "</div>";        
-        echo "</div>";       
+        include __DIR__ . "/albumTemplate.php";
     }
 
     public function display_images_preview() {       
