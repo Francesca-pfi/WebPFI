@@ -154,7 +154,7 @@ main{
 }
 .albumControl{
     display: flex;
-    justify-content: right;
+    justify-content: flex-end;
     align-items: center;
     flex-grow: 8;
 }
